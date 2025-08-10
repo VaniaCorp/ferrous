@@ -218,7 +218,7 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
           className="text-center space-y-4"
         >
           <h3 className="text-3xl font-semibold text-white">In a nutshell</h3>
-          <p className="text-white">starts with "FER"</p>
+          <p className="text-white">starts with &quot;FER&quot;</p>
         </div>
 
         <p
