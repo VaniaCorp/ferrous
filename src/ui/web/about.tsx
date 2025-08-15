@@ -1,7 +1,6 @@
 import { TextParagraphAnimation, TextWithImageAnimation } from "@/animations/text-animation";
 import { motion } from "motion/react";
 import React, { useRef, useEffect, useState, useCallback } from "react";
-import { useLenis } from "lenis/react";
 
 const aboutParagraphs = [
   `Over 350 million adults in Africa alone remain unbanked, a staggering number that represents more than just statistics. It reflects real people, real dreams, and real barriers. And Africa isn't alone. Across many emerging economies in Latin America, Southeast Asia, and the Middle East, millions more face the same systemic challenges: limited access to formal banking, high transaction costs, restrictive international policies, and outdated financial infrastructures that were never built with them in mind.`,
@@ -18,7 +17,7 @@ export default function About() {
   const [visibleParagraphs, setVisibleParagraphs] = useState<number[]>([]);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
   const [upperHidden, setUpperHidden] = useState(false);
-  const lenis = useLenis();
+
 
   // Detect prefers-reduced-motion
   useEffect(() => {

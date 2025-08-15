@@ -11,7 +11,7 @@ interface MiniGameProps {
 
 export default function MiniGame({ onGameComplete }: MiniGameProps) {
   const [clickedLetters, setClickedLetters] = useState<string[]>([]);
-  const [isComplete, setIsComplete] = useState(false);
+  const [, setIsComplete] = useState(false);
   const [revealedTitleParts, setRevealedTitleParts] = useState<string[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
   const textRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -192,7 +192,7 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
           ref={mainTitleRef}
           className="text-center tracking-[0.3em] text-6xl font-bold text-white relative"
         >
-          {mainTitleFragments.map((frag, i) => (
+          {mainTitleFragments.map((frag) => (
             <span key={frag.id} className="relative inline-block">
               <span
                 className={`transition-all duration-500 ${revealedTitleParts.includes(frag.id) ? 'opacity-100' : 'opacity-30'

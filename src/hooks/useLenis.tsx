@@ -15,7 +15,7 @@ export function useOptimizedLenis() {
     if (!lenis) return;
 
     // Update ScrollTrigger on Lenis scroll
-    lenis.on('scroll', (e: any) => {
+    lenis.on('scroll', () => {
       ScrollTrigger.update();
     });
 

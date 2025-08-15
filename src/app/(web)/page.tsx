@@ -56,7 +56,7 @@ function HomeContent() {
 
     const sections = mainRef.current.querySelectorAll('[data-scroll-section]');
     
-    sections.forEach((section, index) => {
+    sections.forEach((section) => {
       ScrollTrigger.create({
         trigger: section,
         start: "top center",

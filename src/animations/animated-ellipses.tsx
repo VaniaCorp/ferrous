@@ -143,7 +143,7 @@ export default function AnimatedEllipses() {
     let frame: number;
     function animate() {
       setEllipses((prev: EllipseState[]) =>
-        prev.map((e, i) => {
+        prev.map((e) => {
           const t = 0.025; // much slower interpolation speed for a more at-ease feel
           return {
             ...e,

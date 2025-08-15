@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "motion/react";
 
 export default function WaitlistDisplay() {
   const lenis = useLenis();
-  const [showScrollButton, setShowScrollButton] = useState(false);
+  const [, setShowScrollButton] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
 
   const navigation = [
