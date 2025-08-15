@@ -2,7 +2,7 @@ import { TextUpAnimation } from "@/animations/text-animation";
 
 export default function HeroText() {
   return (
-    <div className="w-full h-screen max-w-6xl my-48 flex flex-col gap-4">
+    <div className="w-full max-w-6xl mt-72 flex flex-col gap-4">
       <div className="leading-none -space-y-4">
         <TextUpAnimation as="h1">
           WELCOME TO THE VAST

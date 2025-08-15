@@ -76,6 +76,63 @@ export function TextUpAnimation({
   );
 }
 
+export function TextStaggerUpAnimation({
+  children,
+  as: Tag = "span",
+  className = "",
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
+  role,
+}: TextUpAnimationProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (!containerRef.current) return;
+
+    // Split into characters
+    const split = new SplitText(containerRef.current, {
+      type: "chars,words",
+    });
+
+    // Set initial state
+    gsap.set(split.chars, { yPercent: 120, opacity: 1 });
+
+    // Animate on scroll
+    gsap.to(split.chars, {
+      yPercent: 0,
+      opacity: 1,
+      duration: 0.8,
+      stagger: 0.06,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+      onComplete: () => {
+        split.revert();
+      },
+    });
+
+    return () => {
+      split.revert();
+    };
+  }, []);
+
+  return (
+    <div
+      className="relative w-max h-max overflow-hidden"
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledby}
+      role={role}
+    >
+      <Tag ref={containerRef} className={className}>
+        {children}
+      </Tag>
+    </div>
+  );
+}
+
 export function TextParagraphAnimation({
   children,
   as: Tag = "p",
@@ -102,7 +159,7 @@ export function TextParagraphAnimation({
     gsap.to(split.lines, {
       yPercent: 0,
       opacity: 1,
-      duration: 0.8,
+      duration: 0.6,
       ease: "power3.out",
       stagger: 0.1,
       scrollTrigger: {

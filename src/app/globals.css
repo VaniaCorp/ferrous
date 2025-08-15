@@ -44,6 +44,7 @@ body {
   /* Firefox */
   -ms-overflow-style: none;
   /* IE and Edge */
+  scroll-behavior: smooth;
 }
 
 body::-webkit-scrollbar {
@@ -71,7 +72,7 @@ body::-webkit-scrollbar {
 
 .glass {
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 1.5rem;
+  /* border-radius: 1.5rem; */
   box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);

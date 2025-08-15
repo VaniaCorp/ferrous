@@ -159,7 +159,7 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
   };
 
   return (
-    <div className="relative w-full h-screen py-24 flex flex-col justify-center items-center gap-12 z-0">
+    <div id="spell" className="relative w-full h-screen py-24 flex flex-col justify-center items-center gap-12 z-0">
       <section
         ref={sectionRef}
         className="w-full max-w-4xl h-[40em] relative overflow-hidden"
