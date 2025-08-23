@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, DM_Mono } from "next/font/google";
 import LenisProvider from "@/providers/lenis-provider";
 import "./globals.css"; 
 
@@ -12,6 +12,12 @@ const robotoMono = Roboto_Mono({
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
+});
+
+const dmMono = DM_Mono({
+  variable: "--font-dm-mono",
+  subsets: ["latin"],
+  weight: "300"
 });
 
 export const metadata: Metadata = {
@@ -28,7 +34,7 @@ export default function RootLayout({
     <html lang="en">
       <LenisProvider>
         <body
-          className={`${dmSans.variable} ${robotoMono.variable} antialiased`}
+          className={`${dmSans.variable} ${robotoMono.variable} ${dmMono.variable} antialiased`}
           suppressHydrationWarning={true}
         >
           {children}

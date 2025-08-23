@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 const navigation = [
   {
     title: "About",
-    link: "#about",
+    link: "#about-section",
   },
   {
     title: "Join the waitlist",
