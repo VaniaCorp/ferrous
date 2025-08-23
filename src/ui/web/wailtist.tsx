@@ -131,7 +131,7 @@ export default function WaitlistDisplay() {
         </span>
       </div>
 
-      <footer className="w-full h-max glass flex rounded-none">
+      <footer className="relative w-full h-max glass flex rounded-none">
         <div className="w-full h-full mx-auto bg-black/65 backdrop-blur-sm">
           <div className="w-full h-full max-w-7xl mx-auto py-8 px-8 xl:px-4 xl:py-20 flex items-center justify-between">
             <aside className="flex items-center gap-4">

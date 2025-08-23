@@ -3,8 +3,8 @@ import { TextUpAnimation } from "@/animations/text-animation";
 
 export default function Info() {
   return (
-    <div id="info" className="w-full max-w-7xl h-screen max-h-[50em] mx-auto flex flex-col gap-12">
-      <div className="leading-none -space-y-4">
+    <div id="info" className="w-full max-w-7xl h-screen max-h-[50em] lg:px-16 mx-auto flex flex-col gap-12">
+      <div className="leading-none max-md:space-y-1">
         <TextUpAnimation as="h1">
           <span className="yellow-underline">UNEXPLORED</span> AND <br />
         </TextUpAnimation>

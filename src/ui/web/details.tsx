@@ -73,8 +73,10 @@ function CardWithAnimation({ item }: CardWithAnimationProps) {
 
   return (
     <div
-      className={`relative w-max mx-auto h-screen max-h-[75em] flex items-center gap-8${item.id % 2 === 0 ? " flex-row-reverse" : ""
-        }`}
+      className={`relative w-max mx-auto h-screen max-h-[75em] flex items-center gap-8
+        ${item.id % 2 === 0 ? "lg:flex-row-reverse" : "lg:flex-row"}
+        flex-col-reverse 
+        `}
     >
       <div className="flex-1">
         <ExpandableCard
@@ -85,7 +87,7 @@ function CardWithAnimation({ item }: CardWithAnimationProps) {
           onToggle={handleCardToggle}
         />
       </div>
-      <div className="flex-1 max-lg:hidden w-[30em] h-[30em]">
+      <div className="flex-1 w-[15em] h-[15em] lg:w-[30em] lg:h-[30em]">
         <Lottie
           lottieRef={lottieRef}
           animationData={item.animationData}

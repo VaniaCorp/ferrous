@@ -27,19 +27,19 @@ export default function Partner() {
   }, []);
 
   return (
-    <div className="w-full h-screen max-h-[75em] flex items-center justify-center relative">
+    <div className="relative w-full h-full xl:h-screen flex items-center justify-center">
       <AnimatePresence mode="wait">
         {animationState === 'initial' && (
           <motion.div 
             key="initial"
-            className="w-max flex mx-auto"
+            className="w-max flex flex-col lg:flex-row mx-auto"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9, x: -100 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
             <motion.section 
-              className="relative glass w-full max-w-2xl h-84 rounded-2xl p-4 flex flex-col overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+              className="relative glass w-full max-w-[20em] lg:max-w-2xl h-52 lg:h-84 rounded-2xl p-4 flex flex-col overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
               onClick={handleBoxClick}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -66,7 +66,7 @@ export default function Partner() {
               </div>
             </motion.section>
 
-            <div className="w-[30em] h-[30em] flex items-center justify-center">
+            <div className="absolute -bottom-14 right-0 lg:relative lg:bottom-0 lg:right-0 w-[8em] h-[8em] lg:w-[30em] lg:h-[30em] flex items-center justify-center">
               <Lottie
                 animationData={rocket}
                 loop

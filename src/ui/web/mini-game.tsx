@@ -232,7 +232,7 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
       <button
         type="button"
         onClick={resetGame}
-        className="absolute bottom-48 right-48 border p-4 rounded-full opacity-50 hover:opacity-100 transition-opacity duration-200"
+        className="absolute bottom-48 right-5 lg:right-48 border p-4 rounded-full opacity-50 hover:opacity-100 transition-opacity duration-200"
       >
         <Icon icon="uit:redo" width={24} height={24} style={{ transform: "scaleX(-1)" }} />
       </button>

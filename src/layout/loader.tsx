@@ -3,11 +3,15 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 gsap.registerPlugin(SplitText);
 
-export default function InitialLoader() {
+interface InitialLoaderProps {
+  onComplete: () => void;
+}
+
+export default function InitialLoader({ onComplete }: InitialLoaderProps) {
   const containerRef = useRef(null);
   const firstTextRef = useRef(null);
   const secondTextRef = useRef(null);
@@ -16,6 +20,10 @@ export default function InitialLoader() {
 
   useGSAP(() => {
     if (!containerRef.current || !firstTextRef.current || !secondTextRef.current || !firstCursorRef.current || !secondCursorRef.current) return;
+
+    // Prevent scroll during loader animation
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 
     const firstSplit = new SplitText(firstTextRef.current, { type: "chars" });
     const secondSplit = new SplitText(secondTextRef.current, { type: "chars" });
@@ -37,6 +45,10 @@ export default function InitialLoader() {
       onComplete: () => {
         firstSplit.revert();
         secondSplit.revert();
+        // Call the completion callback after animation finishes
+        setTimeout(() => {
+          onComplete();
+        }, 100); // Small delay to ensure smooth transition
       }
     });
 
@@ -69,6 +81,14 @@ export default function InitialLoader() {
       duration: 0.2
     });
 
+  }, [onComplete]);
+
+  // Cleanup effect to ensure scroll is restored if component unmounts
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
   }, []);
 
   const texts = {
@@ -77,10 +97,10 @@ export default function InitialLoader() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black flex items-center justify-center">
+    <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
       <div className="p-4">
         <div ref={containerRef} className="text-white font-mono flex flex-col text-center space-y-4">
-          <div ref={firstTextRef} className="relative inline-block underline text-2xl md:text-3xl">
+          <div ref={firstTextRef} className="relative inline-block text-2xl md:text-3xl">
             {texts.first}
             <span ref={firstCursorRef} className="cursor absolute animate-blink">|</span>
           </div>

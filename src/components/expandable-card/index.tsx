@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import useDeviceSize from "@/hooks/useDeviceSize";
 
 type ExpandableCardProps = {
   title: string;
@@ -23,6 +24,7 @@ export default function ExpandableCard({
   // If expandedProp is undefined, manage state internally
   const [internalExpanded, setInternalExpanded] = useState(false);
   const expanded = expandedProp !== undefined ? expandedProp : internalExpanded;
+  const isMobile = useDeviceSize();
 
   const handleToggle = () => {
     if (onToggle) {
@@ -36,7 +38,10 @@ export default function ExpandableCard({
     <motion.div
       layout
       transition={{ layout: { duration: 0.4, type: "spring" } }}
-      className={`relative glass rounded-xl p-6 text-left shadow-lg text-white/90 flex flex-col gap-4 ${className}`}
+      className={`relative glass rounded-xl p-6 text-left shadow-lg text-white/90 flex flex-col gap-4 cursor-pointer 
+        ${className}
+        ${isMobile ? "w-[20em]" : ""}
+      `}
       style={{
         background: "#71460040",
         color: "#fff",
@@ -47,6 +52,7 @@ export default function ExpandableCard({
         transition: "width 0.4s cubic-bezier(0.22, 1, 0.36, 1), height 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
       }}
       aria-expanded={expanded}
+      onClick={handleToggle}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-[#71460040] inset-0 pointer-events-none"></div>
       <button
@@ -89,7 +95,7 @@ export default function ExpandableCard({
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="flex justify-start mt-auto">
+      <div className="flex justify-start mt-auto cursor-pointer" onClick={handleToggle}>
         <button
           onClick={handleToggle}
           className="flex items-center gap-1 px-2 py-1 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
