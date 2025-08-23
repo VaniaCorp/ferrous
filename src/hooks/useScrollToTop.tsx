@@ -7,7 +7,7 @@ export function useScrollToTop() {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
-    if (!lenis) return;
+    if (!lenis || typeof window === "undefined") return;
 
     const handleScroll = (e: { scroll: number }) => {
       setShowButton(e.scroll > window.innerHeight * 0.5);

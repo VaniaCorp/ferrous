@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 import { DM_Sans } from "next/font/google";
-import { ReactLenis } from "@/lib/lenis";
-import "./globals.css";
 import LenisProvider from "@/providers/lenis-provider";
+import "./globals.css"; 
 
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",

@@ -25,7 +25,7 @@ export default function WaitlistDisplay() {
 
   // Show/hide scroll to top button based on scroll position
   useEffect(() => {
-    if (!lenis) return;
+    if (!lenis || typeof window === "undefined") return;
 
     const handleScroll = (e: { scroll: number }) => {
       // Show button when scrolled down more than 100vh
@@ -64,7 +64,7 @@ export default function WaitlistDisplay() {
   const handleNavigationClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     
-    if (!lenis) return;
+    if (!lenis || typeof document === "undefined") return;
 
     // Remove the # from href to get the element ID
     const elementId = href.replace('#', '');

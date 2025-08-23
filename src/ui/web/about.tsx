@@ -1,7 +1,7 @@
-import { TextParagraphAnimation, TextWithImageAnimation } from "@/animations/text-animation";
+import { TextParagraphAnimation } from "@/animations/text-animation";
 import { motion } from "motion/react";
 import Image from "next/image";
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 const aboutParagraphs = [
   `Over 350 million adults in Africa alone remain unbanked, a staggering number that represents more than just statistics. It reflects real people, real dreams, and real barriers. And Africa isn't alone. Across many emerging economies in Latin America, Southeast Asia, and the Middle East, millions more face the same systemic challenges: limited access to formal banking, high transaction costs, restrictive international policies, and outdated financial infrastructures that were never built with them in mind.`,

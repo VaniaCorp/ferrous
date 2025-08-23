@@ -41,15 +41,18 @@ export default function AnimatedCard({
 
   // Disable body scroll when expanded
   useEffect(() => {
+    if (typeof document === "undefined") return;
+    
     if (isExpanded) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
 
-    // Cleanup on unmount
     return () => {
-      document.body.style.overflow = '';
+      if (typeof document !== "undefined") {
+        document.body.style.overflow = '';
+      }
     };
   }, [isExpanded]);
 

@@ -1,6 +1,6 @@
 "use client";
-import Lottie from 'lottie-react'
-import React, { useEffect, useState } from 'react'
+import Lottie from 'lottie-react';
+import React, { useEffect, useState } from 'react';
 import glowAnimation from "@/lottie/glow.json";
 import HeroText from '@/ui/web/hero-text';
 import Info from '@/ui/web/info';
@@ -20,6 +20,8 @@ export default function Home() {
   const [isGameComplete, setIsGameComplete] = useState(false);
 
   useEffect(() => {
+    if (typeof document === "undefined") return;
+    
     const waitlistEl = document.getElementById("waitlist");
     if (!waitlistEl) return;
 

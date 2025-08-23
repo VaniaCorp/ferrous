@@ -23,6 +23,9 @@ export default function Features() {
       return;
     }
 
+    // Skip if window or document is not available (SSR)
+    if (typeof window === "undefined" || typeof document === "undefined") return;
+
     if (expandedCard) {
       // Save current scroll position
       scrollRef.current = window.scrollY;
@@ -44,7 +47,7 @@ export default function Features() {
 
     // Cleanup function
     return () => {
-      if (expandedCard) {
+      if (expandedCard && typeof document !== "undefined") {
         document.body.style.position = '';
         document.body.style.top = '';
         document.body.style.width = '';

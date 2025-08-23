@@ -16,6 +16,8 @@ const navigation = [
 
 // Smooth scroll to a section by id (with fallback)
 function smoothScrollToId(id: string) {
+  if (typeof document === "undefined") return;
+  
   const el = document.getElementById(id);
   if (el) {
     // Try native smooth scroll
