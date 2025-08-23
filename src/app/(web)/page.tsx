@@ -14,6 +14,7 @@ import Features from '@/ui/web/features';
 import About from '@/ui/web/about';
 import Details from '@/ui/web/details';
 import Image from 'next/image';
+import Partner from '@/ui/web/partner';
 
 export default function Home() {
   const [hideSocials, setHideSocials] = useState<boolean>(false);
@@ -58,6 +59,8 @@ export default function Home() {
       <About />
 
       <Details />
+
+      <Partner />
 
       <WaitlistDisplay />
 

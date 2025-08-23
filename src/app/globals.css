@@ -12,6 +12,7 @@
   --color-olive-transparent: #71460040;
   --font-sans: var(--font-dm-sans);
   --font-mono: var(--font-roboto-mono);
+  --font-dm-mono: var(--font-dm-mono);
   --font-maesiez: var(--font-maesiez);
 }
 
@@ -127,6 +128,15 @@ body::-webkit-scrollbar {
     z-index: -1;
   }
 
+}
+
+.color-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #71460040;
 }
 
 .glass {
