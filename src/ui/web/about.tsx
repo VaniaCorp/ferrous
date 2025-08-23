@@ -1,5 +1,6 @@
 import { TextParagraphAnimation, TextWithImageAnimation } from "@/animations/text-animation";
 import { motion } from "motion/react";
+import Image from "next/image";
 import React, { useRef, useEffect, useState, useCallback } from "react";
 
 const aboutParagraphs = [
@@ -12,12 +13,24 @@ const aboutParagraphs = [
 export default function About() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const upperRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const articleRef = useRef<HTMLDivElement>(null);
+  
+  // State for upper section
+  const [upperInView, setUpperInView] = useState(false);
+  
+  // State for article section
+  const [articleInView, setArticleInView] = useState(false);
+  
+  // State for article scrolling functionality (from animated card)
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | 'none'>('none');
   const [visibleParagraphs, setVisibleParagraphs] = useState<number[]>([]);
+  const scrollAnimationRef = useRef<number | null>(null);
+  const autoScrollRef = useRef<number | null>(null);
+  const [isAutoScrolling, setIsAutoScrolling] = useState<boolean>(true);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
-  const [upperHidden, setUpperHidden] = useState(false);
 
+  // Split content into paragraphs
+  const paragraphs = aboutParagraphs.filter(line => line.trim() !== '');
 
   // Detect prefers-reduced-motion
   useEffect(() => {
@@ -30,249 +43,338 @@ export default function About() {
     }
   }, []);
 
-  // Optimized auto-scroll with Lenis integration
+  // Intersection observer for upper section - scrolls in first
   useEffect(() => {
-    if (isReducedMotion || !scrollRef.current || isHovered || isFocused) return;
+    if (!upperRef.current) return;
 
-    let animationId: number;
-    let startTime: number;
-    const container = scrollRef.current;
-    const totalScroll = container.scrollHeight - container.clientHeight;
-    
-    if (totalScroll <= 0) return;
-
-    // Slower, more readable scroll speed
-    const duration = 20000 + totalScroll * 6;
-
-    function smoothScroll(timestamp: number) {
-      if (!startTime) startTime = timestamp;
-      if (isHovered || isFocused) return;
-
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      
-      // Smooth easing function
-      const easeProgress = 1 - Math.pow(1 - progress, 3);
-      container.scrollTop = totalScroll * easeProgress;
-
-      if (progress < 1 && !isHovered && !isFocused) {
-        animationId = requestAnimationFrame(smoothScroll);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setUpperInView(entry.isIntersecting);
+        });
+      },
+      {
+        threshold: 0.3,
+        rootMargin: "0px 0px -20% 0px",
       }
+    );
+
+    observer.observe(upperRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Intersection observer for article section - scrolls in after upper
+  useEffect(() => {
+    if (!articleRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setArticleInView(entry.isIntersecting);
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -10% 0px",
+      }
+    );
+
+    observer.observe(articleRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Handle mouse position for scroll direction (from animated card)
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!scrollRef.current) return;
+
+    setIsAutoScrolling(false);
+
+    const container = scrollRef.current;
+    const rect = container.getBoundingClientRect();
+    const mouseY = e.clientY - rect.top;
+    const containerHeight = rect.height;
+
+    if (mouseY < containerHeight * 0.2) {
+      setScrollDirection('up');
+    } else if (mouseY > containerHeight * 0.8) {
+      setScrollDirection('down');
+    } else {
+      setScrollDirection('none');
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setScrollDirection('none');
+    setIsAutoScrolling(true);
+  };
+
+  // Smooth scrolling animation (manual via mouse)
+  useEffect(() => {
+    if (!scrollRef.current || scrollDirection === 'none') {
+      if (scrollAnimationRef.current) {
+        cancelAnimationFrame(scrollAnimationRef.current);
+        scrollAnimationRef.current = null;
+      }
+      return;
     }
 
-    animationId = requestAnimationFrame(smoothScroll);
+    const container = scrollRef.current;
+    const scrollSpeed = 2;
+
+    const animate = () => {
+      if (scrollDirection === 'up') {
+        container.scrollTop = Math.max(0, container.scrollTop - scrollSpeed);
+      } else if (scrollDirection === 'down') {
+        container.scrollTop = Math.min(
+          container.scrollHeight - container.clientHeight,
+          container.scrollTop + scrollSpeed
+        );
+      }
+      scrollAnimationRef.current = requestAnimationFrame(animate);
+    };
+
+    scrollAnimationRef.current = requestAnimationFrame(animate);
 
     return () => {
-      if (animationId) {
-        cancelAnimationFrame(animationId);
+      if (scrollAnimationRef.current) {
+        cancelAnimationFrame(scrollAnimationRef.current);
+        scrollAnimationRef.current = null;
       }
     };
-  }, [isHovered, isFocused, isReducedMotion]);
+  }, [scrollDirection]);
 
-  // Enhanced scroll visibility detection
+  // Auto scroll effect (from animated card)
   useEffect(() => {
-    if (!scrollRef.current) return;
+    if (!articleInView || !scrollRef.current || isReducedMotion) {
+      if (autoScrollRef.current) {
+        cancelAnimationFrame(autoScrollRef.current);
+        autoScrollRef.current = null;
+      }
+      return;
+    }
+
+    if (!isAutoScrolling) {
+      if (autoScrollRef.current) {
+        cancelAnimationFrame(autoScrollRef.current);
+        autoScrollRef.current = null;
+      }
+      return;
+    }
+
+    const container = scrollRef.current;
+    const autoScrollSpeed = 0.5;
+    let direction: "down" | "up" = "down";
+
+    const autoScroll = () => {
+      if (!container) return;
+
+      if (container.scrollTop + container.clientHeight >= container.scrollHeight - 1) {
+        direction = "up";
+      }
+      if (container.scrollTop <= 0) {
+        direction = "down";
+      }
+
+      if (direction === "down") {
+        container.scrollTop = Math.min(
+          container.scrollHeight - container.clientHeight,
+          container.scrollTop + autoScrollSpeed
+        );
+      } else {
+        container.scrollTop = Math.max(
+          0,
+          container.scrollTop - autoScrollSpeed
+        );
+      }
+
+      autoScrollRef.current = requestAnimationFrame(autoScroll);
+    };
+
+    autoScrollRef.current = requestAnimationFrame(autoScroll);
+
+    return () => {
+      if (autoScrollRef.current) {
+        cancelAnimationFrame(autoScrollRef.current);
+        autoScrollRef.current = null;
+      }
+    };
+  }, [articleInView, isAutoScrolling, isReducedMotion]);
+
+  // Handle user scroll to pause auto scroll
+  useEffect(() => {
+    if (!articleInView || !scrollRef.current) return;
+
+    let timeout: NodeJS.Timeout | null = null;
+
+    const handleUserScroll = () => {
+      setIsAutoScrolling(false);
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        setIsAutoScrolling(true);
+      }, 3000);
+    };
+
+    const container = scrollRef.current;
+    container.addEventListener("wheel", handleUserScroll, { passive: true });
+    container.addEventListener("touchmove", handleUserScroll, { passive: true });
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+      container.removeEventListener("wheel", handleUserScroll);
+      container.removeEventListener("touchmove", handleUserScroll);
+    };
+  }, [articleInView]);
+
+  // Fade-in paragraphs as they come into view
+  useEffect(() => {
+    if (!articleInView || !scrollRef.current) return;
 
     const container = scrollRef.current;
     const handleScroll = () => {
       const newVisible: number[] = [];
       const paraNodes = Array.from(container.querySelectorAll("p"));
-      
+
       paraNodes.forEach((node, idx) => {
         const rect = (node as HTMLElement).getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
-        const visibleHeight = Math.min(rect.bottom, containerRect.bottom) - Math.max(rect.top, containerRect.top);
-        
-        // More sensitive visibility detection
-        if (visibleHeight > 0.2 * rect.height) {
+
+        const visibleTop = Math.max(rect.top, containerRect.top);
+        const visibleBottom = Math.min(rect.bottom, containerRect.bottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+        if (visibleHeight > 0.1 * rect.height) {
           newVisible.push(idx);
         }
       });
-      
+
       setVisibleParagraphs(newVisible);
     };
 
     handleScroll();
     container.addEventListener("scroll", handleScroll, { passive: true });
-    
-    // Initial visibility check
-    const timeoutId = setTimeout(handleScroll, 100);
-    
+
     return () => {
       container.removeEventListener("scroll", handleScroll);
-      clearTimeout(timeoutId);
     };
-  }, []);
+  }, [articleInView]);
 
-  // Smooth mouse wheel handling
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    if (!scrollRef.current) return;
-    
-    if (isHovered || isFocused) {
-      // Allow native smooth scrolling when user is interacting
-      e.stopPropagation();
-      const container = scrollRef.current;
-      container.scrollBy({
-        top: e.deltaY * 0.5, // Smoother scroll speed
-        behavior: 'auto'
-      });
-    } else {
-      e.preventDefault();
-    }
-  }, [isHovered, isFocused]);
+  // Calculate paragraph opacity based on position
+  const getParagraphOpacity = (idx: number) => {
+    if (!scrollRef.current) return visibleParagraphs.includes(idx) ? 1 : 0.3;
 
-  const handleFocus = useCallback(() => setIsFocused(true), []);
-  const handleBlur = useCallback(() => setIsFocused(false), []);
+    const container = scrollRef.current;
+    const paraNodes = Array.from(container.querySelectorAll("p"));
+    const node = paraNodes[idx] as HTMLElement;
 
-  // Enhanced intersection observer for upper section
-  useEffect(() => {
-    if (!upperRef.current || !scrollRef.current) return;
+    if (!node) return 0.3;
 
-    const upper = upperRef.current;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setUpperHidden(!entry.isIntersecting);
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "-10% 0px -10% 0px",
-      }
-    );
+    const rect = node.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
 
-    observer.observe(upper);
+    const nodeCenter = rect.top + rect.height / 2;
+    const containerCenter = containerRect.top + containerRect.height / 2;
+    const distance = Math.abs(nodeCenter - containerCenter);
+    const maxDistance = containerRect.height / 2;
 
-    return () => observer.disconnect();
-  }, []);
+    const opacity = Math.max(0.2, 1 - (distance / maxDistance) * 0.8);
+    return opacity;
+  };
 
-  const autoScrollStatus = isHovered || isFocused
-    ? "Article scrolling paused. You can now scroll manually."
+  const autoScrollStatus = !isAutoScrolling
+    ? "Article scrolling paused. Move mouse away to resume."
     : isReducedMotion
       ? "Auto-scrolling disabled due to reduced motion preference."
-      : "Article auto-scrolling. Hover or focus to pause.";
+      : "Article auto-scrolling. Hover to control manually.";
 
   return (
     <main
-      className="relative w-full flex flex-col gap-12 items-center justify-center py-36"
+      className="relative w-full h-screen max-h-[70em] my-12 flex flex-col gap-20 items-center justify-center"
       aria-label="About Ferrous"
       id="about-section"
     >
       <span className="sr-only" aria-live="polite">
         {autoScrollStatus}
       </span>
-      
-      <span className="text-sm text-white/70" aria-hidden="true">
+
+      <span className="text-base text-white/70" aria-hidden="true">
         Simple. Secure. designed for you
       </span>
 
+      {/* Upper section - animates in first */}
       <motion.div
         ref={upperRef}
         className="flex flex-col items-center justify-center gap-4 font-light"
-        animate={{ 
-          opacity: upperHidden ? 0 : 1,
-          y: upperHidden ? -20 : 0
+        initial={{ opacity: 0, y: 50 }}
+        animate={{
+          opacity: upperInView ? 1 : 0,
+          y: upperInView ? 0 : 50
         }}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <TextParagraphAnimation className="text-4xl text-center">
+        <TextParagraphAnimation as="h2" className="!font-light max-xl:!text-3xl">
           Ferrous bridges blocked
         </TextParagraphAnimation>
-        <TextParagraphAnimation className="text-4xl text-center">
+        <TextParagraphAnimation as="h2" className="!font-light max-xl:!text-3xl">
           economies to the global money pool turning
         </TextParagraphAnimation>
-        <TextWithImageAnimation
-          leftText="local"
-          rightText="currency into smart investments using"
-          imageSrc="/images/money-bar.svg"
-          imageAlt="money bar"
-          className="text-4xl text-center"
-        />
-        <TextParagraphAnimation className="text-4xl text-center">
+        <span className="flex items-center space-x-3">
+          <TextParagraphAnimation as="h2" className="!font-light max-xl:!text-3xl">
+            local
+          </TextParagraphAnimation>
+          <Image src={'/images/money-bar.svg'} width={58} height={58} alt="" />
+          <TextParagraphAnimation as="h2" className="!font-light max-xl:!text-3xl">
+            currency into smart investments using
+          </TextParagraphAnimation>
+        </span>
+        <TextParagraphAnimation as="h2" className="!font-light max-xl:!text-3xl">
           AI and DeFi
         </TextParagraphAnimation>
       </motion.div>
 
+      {/* Article section - animates in after upper */}
       <motion.article
-        className="relative w-full max-w-4xl h-80 flex items-center justify-center overflow-hidden py-6"
+        ref={articleRef}
+        className="relative w-full max-w-6xl h-96 flex items-center justify-center overflow-hidden py-6"
         aria-label="About Ferrous details"
         role="region"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: true, margin: "-10%" }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{
+          opacity: articleInView ? 1 : 0,
+          y: articleInView ? 0 : 50
+        }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
       >
         <div
           ref={scrollRef}
-          className="prose prose-invert max-w-2xl text-lg opacity-90 space-y-6 text-left relative w-full h-full overflow-y-auto focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg no-smooth-scroll"
+          className="prose prose-invert prose-2xl text-white/90 space-y-12 text-center relative w-full h-full overflow-y-auto focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg"
           style={{
-            scrollbarWidth: "thin",
-            scrollbarColor: "rgba(255,255,255,0.3) transparent",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            WebkitOverflowScrolling: "touch",
           }}
           tabIndex={0}
           aria-label="About Ferrous article content"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onWheel={handleWheel}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
         >
           <style jsx>{`
             div::-webkit-scrollbar {
-              width: 6px;
-            }
-            div::-webkit-scrollbar-track {
-              background: transparent;
-            }
-            div::-webkit-scrollbar-thumb {
-              background: rgba(255,255,255,0.3);
-              border-radius: 3px;
-            }
-            div::-webkit-scrollbar-thumb:hover {
-              background: rgba(255,255,255,0.5);
+              display: none;
             }
           `}</style>
-          
-          {aboutParagraphs.map((line, idx) => (
+
+          {paragraphs.map((line, idx) => (
             <motion.p
               key={idx}
-              initial={isReducedMotion ? false : { opacity: 0.4, y: 15 }}
-              animate={
-                isReducedMotion
-                  ? undefined
-                  : {
-                      opacity: visibleParagraphs.includes(idx) ? 1 : 0.4,
-                      y: visibleParagraphs.includes(idx) ? 0 : 15,
-                    }
-              }
-              transition={{ 
-                duration: 0.6, 
-                ease: "easeOut",
-                delay: visibleParagraphs.includes(idx) ? idx * 0.1 : 0 
+              className="!text-lg leading-relaxed transition-all duration-300 text-center"
+              style={{
+                opacity: isReducedMotion ? 1 : getParagraphOpacity(idx),
+                transform: `translateY(${visibleParagraphs.includes(idx) ? 0 : 10}px)`,
               }}
-              className="leading-relaxed"
             >
               {line}
             </motion.p>
           ))}
-        </div>
-        
-        {/* Enhanced status indicator */}
-        <div
-          className={`absolute bottom-3 right-3 px-3 py-1.5 text-xs rounded-full transition-all duration-300 pointer-events-none select-none backdrop-blur-sm ${
-            isHovered || isFocused
-              ? "bg-orange-500/90 text-white scale-105"
-              : isReducedMotion
-                ? "bg-gray-500/70 text-white/90"
-                : "bg-blue-500/70 text-white/90 animate-pulse"
-          }`}
-          aria-hidden="true"
-        >
-          {isHovered || isFocused
-            ? "Manual"
-            : isReducedMotion
-              ? "Static"
-              : "Auto"}
         </div>
       </motion.article>
     </main>

@@ -56,7 +56,7 @@ function CardWithAnimation({ item }: CardWithAnimationProps) {
   const handleCardToggle = useCallback((newExpandedState: boolean) => {
     // Update state and trigger animation simultaneously
     setIsExpanded(newExpandedState);
-    
+
     // Trigger animation immediately without any delay
     if (lottieRef.current) {
       if (newExpandedState) {
@@ -73,18 +73,19 @@ function CardWithAnimation({ item }: CardWithAnimationProps) {
 
   return (
     <div
-      className={`relative w-max h-[50em] flex items-center gap-8${
-        item.id % 2 === 0 ? " flex-row-reverse" : ""
-      }`}
+      className={`relative w-max mx-auto h-screen max-h-[75em] flex items-center gap-8${item.id % 2 === 0 ? " flex-row-reverse" : ""
+        }`}
     >
-      <ExpandableCard
-        title={item.title}
-        content={item.content}
-        truncatedContent={item.truncatedContent}
-        expanded={isExpanded}
-        onToggle={handleCardToggle}
-      />
-      <div className="w-[30em] h-[30em]">
+      <div className="flex-1">
+        <ExpandableCard
+          title={item.title}
+          content={item.content}
+          truncatedContent={item.truncatedContent}
+          expanded={isExpanded}
+          onToggle={handleCardToggle}
+        />
+      </div>
+      <div className="flex-1 max-lg:hidden w-[30em] h-[30em]">
         <Lottie
           lottieRef={lottieRef}
           animationData={item.animationData}
@@ -92,7 +93,7 @@ function CardWithAnimation({ item }: CardWithAnimationProps) {
           autoplay={false}
           width={0}
           height={0}
-          className="w-full h-full inset-0 pointer-events-none"
+          className="w-full h-full object-fit inset-0 pointer-events-none"
         />
       </div>
     </div>

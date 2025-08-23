@@ -14,6 +14,17 @@ const navigation = [
   }
 ];
 
+// Smooth scroll to a section by id (with fallback)
+function smoothScrollToId(id: string) {
+  const el = document.getElementById(id);
+  if (el) {
+    // Try native smooth scroll
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Optionally, you can adjust for fixed nav height if needed
+    // setTimeout(() => window.scrollBy({ top: -80, behavior: "smooth" }), 400);
+  }
+}
+
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -32,6 +43,22 @@ export default function Navbar() {
       setIsExpanded(false);
       buttonRef.current?.focus();
     }
+  };
+
+  // Handle smooth scroll for nav links
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const id = href.replace("#", "");
+      smoothScrollToId(id);
+    }
+  };
+
+  // Handle smooth scroll for Get early access button
+  const handleEarlyAccessClick = (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>) => {
+    e.preventDefault?.();
+    setIsExpanded(false);
+    smoothScrollToId("waitlist");
   };
 
   return (
@@ -55,6 +82,7 @@ export default function Navbar() {
               tabIndex={0}
               aria-label={item.title}
               className="focus:outline-none focus-visible:ring-2 focus-visible:ring-green-700 rounded"
+              onClick={e => handleNavClick(e, item.link)}
             >
               {item.title}
             </Link>
@@ -84,7 +112,17 @@ export default function Navbar() {
           onMouseLeave={handleCollapse}
           onFocus={handleExpand}
           onBlur={handleCollapse}
-          onKeyDown={handleKeyDown}
+          onKeyDown={e => {
+            handleKeyDown(e);
+            // If user presses Enter/Space while expanded, scroll to waitlist
+            if (
+              (e.key === "Enter" || e.key === " ") &&
+              isExpanded
+            ) {
+              handleEarlyAccessClick(e);
+            }
+          }}
+          onClick={handleEarlyAccessClick}
           tabIndex={0}
           type="button"
         >

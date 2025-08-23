@@ -1,32 +1,23 @@
 "use client";
+import Lottie from 'lottie-react'
+import React, { useEffect, useState } from 'react'
+import glowAnimation from "@/lottie/glow.json";
+import HeroText from '@/ui/web/hero-text';
+import Info from '@/ui/web/info';
+import MiniGame from '@/ui/web/mini-game';
+import { Icon } from '@iconify/react';
+import Link from 'next/link';
+import socials from '@/data/socials.json';
+import Navbar from '@/layout/navbar';
+import WaitlistDisplay from '@/ui/web/wailtist';
+import Features from '@/ui/web/features';
+import About from '@/ui/web/about';
+import Details from '@/ui/web/details';
+import Image from 'next/image';
 
-import Navbar from "@/layout/navbar";
-import { Icon } from "@iconify/react/dist/iconify.js";
-import Image from "next/image";
-import socials from "@/data/socials.json";
-import HeroText from "@/ui/web/hero-text";
-import About from "@/ui/web/about";
-import MiniGame from "@/ui/web/mini-game";
-import Features from "@/ui/web/features";
-import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
-import Info from "@/ui/web/info";
-import Lottie from "lottie-react";
-import animationData from "@/lottie/glow.json";
-import Details from "@/ui/web/details";
-import WaitlistDisplay from "@/ui/web/wailtist";
-import SmoothScrollProvider from "@/components/smooth-scroll-provider";
-import { useOptimizedLenis } from "@/hooks/useLenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
-function HomeContent() {
+export default function Home() {
+  const [hideSocials, setHideSocials] = useState<boolean>(false);
   const [isGameComplete, setIsGameComplete] = useState(false);
-  const [hideSocials, setHideSocials] = useState(false);
-  const lenis = useOptimizedLenis();
-  const mainRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const waitlistEl = document.getElementById("waitlist");
@@ -50,74 +41,29 @@ function HomeContent() {
     return () => observer.disconnect();
   }, []);
 
-  // Scroll snap functionality
-  useEffect(() => {
-    if (!lenis || !mainRef.current) return;
-
-    const sections = mainRef.current.querySelectorAll('[data-scroll-section]');
-    
-    sections.forEach((section) => {
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top center",
-        end: "bottom center",
-        onEnter: () => {
-          // Smooth scroll to section center when entering
-          if (lenis) {
-            const sectionRect = section.getBoundingClientRect();
-            const sectionTop = sectionRect.top + window.scrollY;
-            lenis.scrollTo(sectionTop - window.innerHeight * 0.1, {
-              duration: 1.2,
-              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            });
-          }
-        },
-      });
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, [lenis]);
-
   return (
-    <div 
-      ref={mainRef}
-      className="relative w-full max-w-7xl mx-auto transition-colors duration-300"
-    >
+    <>
       <Navbar />
-      
-      <div data-scroll-section>
-        <HeroText />
-      </div>
-      
-      <div data-scroll-section>
-        <Info />
-      </div>
-      
-      <div data-scroll-section>
-        <MiniGame onGameComplete={setIsGameComplete} />
-      </div>
-      
-      <div data-scroll-section>
-        <Features />
-      </div>
-      
-      <div data-scroll-section>
-        <About />
-      </div>
-      
-      <div data-scroll-section>
-        <Details />
-      </div>
 
-      {/* Social Navigation */}
+      <HeroText />
+
+      <Info />
+
+      <MiniGame onGameComplete={setIsGameComplete} />
+
+      <Features />
+
+      <About />
+
+      <Details />
+
+      <WaitlistDisplay />
+
       <nav
-        className={`fixed top-1/2 -translate-y-1/2 right-[5%] flex flex-col gap-4 transition-all duration-500 z-50 ${
-          hideSocials 
-            ? "opacity-0 pointer-events-none translate-x-8" 
-            : "opacity-100 pointer-events-auto translate-x-0"
-        }`}
+        className={`fixed top-1/2 -translate-y-1/2 right-[5%] flex flex-col gap-4 transition-all duration-500 z-50 ${hideSocials
+          ? "opacity-0 pointer-events-none translate-x-8"
+          : "opacity-100 pointer-events-auto translate-x-0"
+          }`}
         aria-label="Social media links"
       >
         {socials.map((social) => (
@@ -140,52 +86,39 @@ function HomeContent() {
         ))}
       </nav>
 
-      {/* Background Elements */}
       <Image
         src="/videos/earth-gray.gif"
         alt="Rotating gray earth"
         width={0}
         height={0}
         fetchPriority="high"
-        className={`w-full h-full object-fill fixed top-56 -left-[30%] inset-0 -z-10 transition-opacity duration-300 ${isGameComplete ? "opacity-0" : "opacity-100"
+        className={`w-full h-full object-fill fixed top-56 -left-[30%] inset-0 -z-10 transition-opacity duration-300 
+          ${isGameComplete ? "opacity-0" : "opacity-100"
           }`}
         draggable={false}
         unoptimized
       />
+
       <Image
         src="/videos/earth-colour.gif"
         alt="Rotating colour earth"
         width={0}
         height={0}
         fetchPriority="high"
-        className={`w-full h-full object-cover fixed top-[40%] -left-[35%] inset-0 -z-10 transition-opacity duration-300 ${isGameComplete ? "opacity-100" : "opacity-0"
+        className={`w-full h-full object-cover fixed top-[40%] -left-[35%] inset-0 -z-10 transition-opacity duration-300 
+          ${isGameComplete ? "opacity-100" : "opacity-0"
           }`}
         draggable={false}
         unoptimized
       />
 
-      <div>
-        <Lottie
-          animationData={animationData}
-          loop={true}
-          width={0}
-          height={0}
-          className="fixed w-max h-max top-[50%] translate-y-[-50%] right-[-60%] object-fill inset-0 -z-10 pointer-events-none"
-        />
-      </div>
-
-
-    </div>
-  );
-}
-
-export default function Home() {
-  return (
-    <SmoothScrollProvider>
-      <div className="w-full min-h-screen">
-        <HomeContent />
-        <WaitlistDisplay />
-      </div>
-    </SmoothScrollProvider>
-  );
+      <Lottie
+        animationData={glowAnimation}
+        loop
+        width={0}
+        height={0}
+        className='fixed w-[60em] h-[60em] lg:w-max lg:h-max top-[50%] translate-y-[-50%] left-[-20%] xl:right-[-70%] inset-0 -z-10 pointer-events-none'
+      />
+    </>
+  )
 }

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 import { DM_Sans } from "next/font/google";
+import { ReactLenis } from "@/lib/lenis";
 import "./globals.css";
-import "lenis/dist/lenis.css";
+import LenisProvider from "@/providers/lenis-provider";
 
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
@@ -26,12 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${dmSans.variable} ${robotoMono.variable} antialiased`}
-        suppressHydrationWarning={true}
-      >
-        {children}
-      </body>
+      <LenisProvider>
+        <body
+          className={`${dmSans.variable} ${robotoMono.variable} antialiased`}
+          suppressHydrationWarning={true}
+        >
+          {children}
+        </body>
+      </LenisProvider>
     </html>
   );
 }

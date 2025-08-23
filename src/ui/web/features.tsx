@@ -1,10 +1,12 @@
 import AnimatedCard from "@/components/animated-card";
 import features from "@/data/features.json";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 export default function Features() {
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
+  const scrollRef = useRef<number>(0);
+  const isInitialMount = useRef(true);
 
   const handleCardToggle = (featureTitle: string) => {
     setExpandedCard(featureTitle);
@@ -14,8 +16,44 @@ export default function Features() {
     setExpandedCard(null);
   };
 
+  useEffect(() => {
+    // Skip scroll handling on initial mount
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    if (expandedCard) {
+      // Save current scroll position
+      scrollRef.current = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollRef.current}px`;
+      document.body.style.width = '100%';
+    } else {
+      // Restore scroll position
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      
+      // Only restore scroll position if we had a saved position
+      if (scrollRef.current > 0) {
+        window.scrollTo(0, scrollRef.current);
+        scrollRef.current = 0;
+      }
+    }
+
+    // Cleanup function
+    return () => {
+      if (expandedCard) {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+      }
+    };
+  }, [expandedCard]);
+
   return (
-    <div className="relative w-full h-[50em] my-52 py-[25em] flex gap-8 items-center justify-between">
+    <div id="features" className="relative w-full max-w-7xl xl:h-screen my-12 mx-auto flex flex-wrap gap-8 items-center justify-between">
       <AnimatePresence mode="wait">
         {expandedCard === null ? (
           features.map((feature) => (
@@ -25,7 +63,7 @@ export default function Features() {
               initial={{ opacity: 0, scale: 0.96, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 40 }}
-              transition={{ type: "keyframes", stiffness: 300, damping: 30 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               <AnimatedCard
                 imageSrc={feature.image}
@@ -41,23 +79,14 @@ export default function Features() {
             const feature = features.find(f => f.title === expandedCard);
             if (!feature) return null;
             return (
-              <motion.div
+              <AnimatedCard
                 key={feature.title}
-                layout
-                initial={{ opacity: 0, scale: 0.96, y: 40 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: 40 }}
-                transition={{ type: "keyframes", stiffness: 300, damping: 30 }}
-                className="w-full flex items-center justify-center"
-              >
-                <AnimatedCard
-                  imageSrc={feature.image}
-                  title={feature.title}
-                  content={feature.description}
-                  isExpanded={true}
-                  onToggle={handleClose}
-                />
-              </motion.div>
+                imageSrc={feature.image}
+                title={feature.title}
+                content={feature.description}
+                isExpanded={true}
+                onToggle={handleClose}
+              />
             );
           })()
         )}

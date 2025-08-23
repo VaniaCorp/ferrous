@@ -41,8 +41,8 @@ export default function ExpandableCard({
         background: "#71460040",
         color: "#fff",
         boxShadow: "0 4px 24px 0 rgba(0,0,0,0.15)",
-        width: expanded ? "32rem" : "23rem", // max-w-md = 28rem, initial = 18rem
-        height: expanded ? "36rem" : "15rem",  // initial height, expanded auto
+        width: expanded ? "32rem" : "26rem", // max-w-md = 28rem, initial = 18rem
+        height: expanded ? "36rem" : "18rem",  // initial height, expanded auto
         overflow: "hidden",
         transition: "width 0.4s cubic-bezier(0.22, 1, 0.36, 1), height 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
       }}

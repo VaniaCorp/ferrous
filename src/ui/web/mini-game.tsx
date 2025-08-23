@@ -159,7 +159,7 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
   };
 
   return (
-    <div id="spell" className="relative w-full h-screen py-24 flex flex-col justify-center items-center gap-12 z-0">
+    <div id="spell" className="relative w-full max-w-7xl h-screen max-h-[75em] mx-auto flex flex-col justify-center items-center gap-12 z-0">
       <section
         ref={sectionRef}
         className="w-full max-w-4xl h-[40em] relative overflow-hidden"
@@ -232,7 +232,7 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
       <button
         type="button"
         onClick={resetGame}
-        className="absolute bottom-32 right-0 border p-4 rounded-full opacity-50 hover:opacity-100 transition-opacity duration-200"
+        className="absolute bottom-48 right-48 border p-4 rounded-full opacity-50 hover:opacity-100 transition-opacity duration-200"
       >
         <Icon icon="uit:redo" width={24} height={24} style={{ transform: "scaleX(-1)" }} />
       </button>

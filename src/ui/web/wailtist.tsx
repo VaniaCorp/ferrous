@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "motion/react";
 
 export default function WaitlistDisplay() {
   const lenis = useLenis();
-  const [, setShowScrollButton] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
 
   const navigation = [
@@ -29,7 +29,8 @@ export default function WaitlistDisplay() {
 
     const handleScroll = (e: { scroll: number }) => {
       // Show button when scrolled down more than 100vh
-      setShowScrollButton(e.scroll > window.innerHeight);
+      const shouldShow = e.scroll > window.innerHeight;
+      setShowScrollButton(shouldShow);
     };
 
     lenis.on('scroll', handleScroll);
@@ -53,6 +54,8 @@ export default function WaitlistDisplay() {
       },
       onComplete: () => {
         setIsScrolling(false);
+        // Reset the showScrollButton state after scrolling completes
+        setShowScrollButton(false);
       }
     });
   }, [lenis]);
@@ -68,10 +71,15 @@ export default function WaitlistDisplay() {
     const targetElement = document.getElementById(elementId);
 
     if (targetElement) {
+      setIsScrolling(true);
+      
       lenis.scrollTo(targetElement, {
         duration: 1.5,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         offset: -80, // Account for any fixed headers
+        onComplete: () => {
+          setIsScrolling(false);
+        }
       });
     }
   }, [lenis]);
@@ -79,9 +87,9 @@ export default function WaitlistDisplay() {
   return (
     <div
       id="waitlist"
-      className="relative w-full h-[75em] mx-auto mt-48 flex flex-col"
+      className="relative w-full h-screen max-h-[75em] mx-auto flex flex-col"
     >
-      <section className="absolute top-[22%] left-[50%] translate-x-[-50%] w-max h-max mx-auto flex flex-col gap-4">
+      <section className="absolute top-[13%] left-[50%] translate-x-[-50%] w-max h-max mx-auto flex flex-col gap-4">
         <span className="text-2xl">Join Our</span>
         <div className="-mt-8">
           <TextStaggerUpAnimation 
@@ -125,7 +133,7 @@ export default function WaitlistDisplay() {
 
       <footer className="w-full h-max glass flex rounded-none">
         <div className="w-full h-full mx-auto bg-black/65 backdrop-blur-sm">
-          <div className="w-full h-full max-w-7xl mx-auto py-20 flex items-center justify-between">
+          <div className="w-full h-full max-w-7xl mx-auto py-8 px-8 xl:px-4 xl:py-20 flex items-center justify-between">
             <aside className="flex items-center gap-4">
               <span 
                 className="font-maesiez text-2xl cursor-pointer transition-colors duration-200 hover:text-orange-300" 
@@ -198,55 +206,61 @@ export default function WaitlistDisplay() {
               ))}
 
               <AnimatePresence>
-                <motion.button
-                  type="button"
-                  onClick={scrollToTop}
-                  disabled={isScrolling}
-                  className={`relative w-max border backdrop-blur-sm rounded-3xl p-3 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 overflow-hidden ${
-                    isScrolling 
-                      ? 'border-orange-400 bg-orange-400/20 cursor-wait' 
-                      : 'border-white hover:scale-110 hover:border-white/40 hover:bg-white/10 cursor-pointer'
-                  }`}
-                  aria-label={isScrolling ? "Scrolling to top..." : "Scroll to top of page"}
-                  whileHover={!isScrolling ? { scale: 1.05 } : {}}
-                  whileTap={!isScrolling ? { scale: 0.95 } : {}}
-                >
-                  {/* Animated background for scrolling state */}
-                  <AnimatePresence>
-                    {isScrolling && (
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-orange-500/30 to-orange-300/30"
-                        initial={{ x: '-100%' }}
-                        animate={{ x: '100%' }}
-                        exit={{ opacity: 0 }}
-                        transition={{
-                          duration: 2,
-                          ease: "easeInOut",
-                          repeat: 1,
-                        }}
-                      />
-                    )}
-                  </AnimatePresence>
-
-                  <motion.div
-                    animate={isScrolling ? { 
-                      rotateZ: 360,
-                    } : {}}
-                    transition={isScrolling ? {
-                      duration: 2,
-                      ease: "easeInOut",
-                    } : {}}
+                {showScrollButton && (
+                  <motion.button
+                    type="button"
+                    onClick={scrollToTop}
+                    disabled={isScrolling}
+                    className={`relative w-max border backdrop-blur-sm rounded-3xl p-3 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 overflow-hidden ${
+                      isScrolling 
+                        ? 'border-orange-400 bg-orange-400/20 cursor-wait' 
+                        : 'border-white hover:scale-110 hover:border-white/40 hover:bg-white/10 cursor-pointer'
+                    }`}
+                    aria-label={isScrolling ? "Scrolling to top..." : "Scroll to top of page"}
+                    whileHover={!isScrolling ? { scale: 1.05 } : {}}
+                    whileTap={!isScrolling ? { scale: 0.95 } : {}}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <Icon 
-                      icon="mdi:arrow-up" 
-                      width={38} 
-                      height={38} 
-                      className={`transition-colors duration-300 ${
-                        isScrolling ? 'text-orange-300' : 'text-white'
-                      }`} 
-                    />
-                  </motion.div>
-                </motion.button>
+                    {/* Animated background for scrolling state */}
+                    <AnimatePresence>
+                      {isScrolling && (
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-orange-500/30 to-orange-300/30"
+                          initial={{ x: '-100%' }}
+                          animate={{ x: '100%' }}
+                          exit={{ opacity: 0 }}
+                          transition={{
+                            duration: 2,
+                            ease: "easeInOut",
+                            repeat: 1,
+                          }}
+                        />
+                      )}
+                    </AnimatePresence>
+
+                    <motion.div
+                      animate={isScrolling ? { 
+                        rotateZ: 360,
+                      } : {}}
+                      transition={isScrolling ? {
+                        duration: 2,
+                        ease: "easeInOut",
+                      } : {}}
+                    >
+                      <Icon 
+                        icon="mdi:arrow-up" 
+                        width={38} 
+                        height={38} 
+                        className={`transition-colors duration-300 ${
+                          isScrolling ? 'text-orange-300' : 'text-white'
+                        }`} 
+                      />
+                    </motion.div>
+                  </motion.button>
+                )}
               </AnimatePresence>
             </aside>
           </div>
