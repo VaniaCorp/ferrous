@@ -1,6 +1,6 @@
 "use client";
 import Lottie from 'lottie-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import glowAnimation from "@/lottie/glow.json";
 import HeroText from '@/ui/web/hero-text';
 import Info from '@/ui/web/info';
@@ -15,10 +15,15 @@ import About from '@/ui/web/about';
 import Details from '@/ui/web/details';
 import Image from 'next/image';
 import Partner from '@/ui/web/partner';
+import InitialLoader from '@/layout/loader';
+import { gsap } from 'gsap';
 
 export default function Home() {
   const [hideSocials, setHideSocials] = useState<boolean>(false);
   const [isGameComplete, setIsGameComplete] = useState(false);
+  const [isLoaderComplete, setIsLoaderComplete] = useState(false);
+  const [isPageVisible, setIsPageVisible] = useState(false);
+  const pageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -44,11 +49,44 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (isLoaderComplete && pageRef.current) {
+      // Prevent scroll during transition
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      
+      // Fade in the page
+      gsap.to(pageRef.current, {
+        opacity: 1,
+        duration: 0.2,
+        ease: "power2.out",
+        onComplete: () => {
+          setIsPageVisible(true);
+          // Re-enable scroll after page is visible
+          document.body.style.overflow = '';
+          document.documentElement.style.overflow = '';
+        }
+      });
+    }
+  }, [isLoaderComplete]);
+
+  const handleLoaderComplete = () => {
+    setIsLoaderComplete(true);
+  };
+
+  if (!isLoaderComplete) {
+    return <InitialLoader onComplete={handleLoaderComplete} />;
+  }
+
   return (
-    <>
+    <div 
+      ref={pageRef}
+      className="opacity-0"
+      style={{ opacity: 0 }}
+    >
       <Navbar />
 
-      <HeroText />
+      <HeroText isVisible={isPageVisible} />
 
       <Info />
 
@@ -65,7 +103,7 @@ export default function Home() {
       <WaitlistDisplay />
 
       <nav
-        className={`fixed top-1/2 -translate-y-1/2 right-[5%] flex flex-col gap-4 transition-all duration-500 z-50 ${hideSocials
+        className={`fixed top-1/2 -translate-y-1/2 right-[5%] hidden md:flex flex-col gap-4 transition-all duration-500 z-50 ${hideSocials
           ? "opacity-0 pointer-events-none translate-x-8"
           : "opacity-100 pointer-events-auto translate-x-0"
           }`}
@@ -124,6 +162,6 @@ export default function Home() {
         height={0}
         className='fixed w-[60em] h-[60em] lg:w-max lg:h-max top-[50%] translate-y-[-50%] left-[-20%] xl:right-[-70%] inset-0 -z-10 pointer-events-none'
       />
-    </>
+    </div>
   )
 }

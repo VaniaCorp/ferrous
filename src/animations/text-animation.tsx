@@ -17,6 +17,7 @@ type TextUpAnimationProps = {
   "aria-label"?: string;
   "aria-labelledby"?: string;
   role?: string;
+  shouldAnimate?: boolean;
 };
 
 export function TextUpAnimation({
@@ -26,6 +27,7 @@ export function TextUpAnimation({
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledby,
   role,
+  shouldAnimate = false,
 }: TextUpAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -40,27 +42,41 @@ export function TextUpAnimation({
     // Set initial state
     gsap.set(split.chars, { yPercent: 120, opacity: 1 });
 
-    // Animate on scroll
-    gsap.to(split.chars, {
-      yPercent: 0,
-      opacity: 1,
-      duration: 0.8,
-      stagger: 0,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 80%",
-        toggleActions: "play none none reverse",
-      },
-      onComplete: () => {
-        split.revert();
-      },
-    });
+    // If shouldAnimate is true, trigger the animation immediately
+    if (shouldAnimate) {
+      gsap.to(split.chars, {
+        yPercent: 0,
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0,
+        ease: "power3.out",
+        onComplete: () => {
+          split.revert();
+        },
+      });
+    } else {
+      // Fallback to scroll-based animation if shouldAnimate is not provided
+      gsap.to(split.chars, {
+        yPercent: 0,
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+        onComplete: () => {
+          split.revert();
+        },
+      });
+    }
 
     return () => {
       split.revert();
     };
-  }, []);
+  }, [shouldAnimate]);
 
   return (
     <div

@@ -1,4 +1,5 @@
 import { TextParagraphAnimation } from "@/animations/text-animation";
+import useDeviceSize from "@/hooks/useDeviceSize";
 import { motion } from "motion/react";
 import Image from "next/image";
 import React, { useRef, useEffect, useState } from "react";
@@ -14,13 +15,13 @@ export default function About() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const upperRef = useRef<HTMLDivElement>(null);
   const articleRef = useRef<HTMLDivElement>(null);
-  
+
   // State for upper section
   const [upperInView, setUpperInView] = useState(false);
-  
+
   // State for article section
   const [articleInView, setArticleInView] = useState(false);
-  
+
   // State for article scrolling functionality (from animated card)
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | 'none'>('none');
   const [visibleParagraphs, setVisibleParagraphs] = useState<number[]>([]);
@@ -31,6 +32,7 @@ export default function About() {
 
   // Split content into paragraphs
   const paragraphs = aboutParagraphs.filter(line => line.trim() !== '');
+  const isMobile = useDeviceSize();
 
   // Detect prefers-reduced-motion
   useEffect(() => {
@@ -303,7 +305,7 @@ export default function About() {
       {/* Upper section - animates in first */}
       <motion.div
         ref={upperRef}
-        className="flex flex-col items-center justify-center gap-4 font-light"
+        className="flex flex-col items-center justify-center md:gap-4 font-light"
         initial={{ opacity: 0, y: 50 }}
         animate={{
           opacity: upperInView ? 1 : 0,
@@ -311,22 +313,22 @@ export default function About() {
         }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <TextParagraphAnimation as="h2" className="!font-light max-xl:!text-3xl">
+        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light max-md:!text-lg max-xl:!text-3xl">
           Ferrous bridges blocked
         </TextParagraphAnimation>
-        <TextParagraphAnimation as="h2" className="!font-light max-xl:!text-3xl">
+        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light max-md:!text-lg max-xl:!text-3xl">
           economies to the global money pool turning
         </TextParagraphAnimation>
-        <span className="flex items-center space-x-3">
-          <TextParagraphAnimation as="h2" className="!font-light max-xl:!text-3xl">
+        <span className="flex items-center space-x-1 md:space-x-3">
+          <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light max-md:!text-lg max-xl:!text-3xl">
             local
           </TextParagraphAnimation>
-          <Image src={'/images/money-bar.svg'} width={58} height={58} alt="" />
-          <TextParagraphAnimation as="h2" className="!font-light max-xl:!text-3xl">
+          <Image src={'/images/money-bar.svg'} width={isMobile ? 0 : 58} height={isMobile ? 0 : 58} alt="" />
+          <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light max-md:!text-lg max-xl:!text-3xl">
             currency into smart investments using
           </TextParagraphAnimation>
         </span>
-        <TextParagraphAnimation as="h2" className="!font-light max-xl:!text-3xl">
+        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light max-md:!text-lg max-xl:!text-3xl">
           AI and DeFi
         </TextParagraphAnimation>
       </motion.div>

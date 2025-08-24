@@ -56,7 +56,7 @@ export default function Features() {
   }, [expandedCard]);
 
   return (
-    <div id="features" className="relative w-full max-w-7xl xl:h-screen my-12 mx-auto flex flex-wrap gap-8 items-center justify-between">
+    <div id="features" className="relative w-full max-w-7xl xl:h-screen lg:px-16 my-12 mx-auto flex flex-wrap gap-8 items-center justify-center lg:justify-between">
       <AnimatePresence mode="wait">
         {expandedCard === null ? (
           features.map((feature) => (

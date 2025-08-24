@@ -30,9 +30,9 @@ export default function FormDisplay({
   }, [onSubmit]);
 
   return (
-    <div className="w-full max-w-7xl mx-auto flex items-center gap-8">
+    <div className="w-full max-w-7xl h-full mx-auto flex flex-col xl:flex-row items-center justify-center gap-8">
       {/* Form Content Area - FAQ and Form OR Welcome Message */}
-      <div className="w-full flex gap-8 relative">
+      <div className="w-full flex flex-col items-center lg:flex-row gap-8 relative">
         {/* Form View */}
         {animationState === 'form' && (
           <>

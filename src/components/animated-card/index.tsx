@@ -22,13 +22,14 @@ export default function AnimatedCard({
   // Truncate content for collapsed state
   const truncatedContent =
     content.length > 360 ? content.slice(0, 360) + "..." : content;
+    const isMobile = useDeviceSize();
 
   // For scrolling and fade-in effect
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | 'none'>('none');
   const [visibleParagraphs, setVisibleParagraphs] = useState<number[]>([]);
   const scrollAnimationRef = useRef<number | null>(null);
-  const { isTablet } = useDeviceSize();
+  const isTablet = useDeviceSize();
 
   // For auto scroll
   const autoScrollRef = useRef<number | null>(null);
@@ -268,7 +269,7 @@ export default function AnimatedCard({
         <motion.div
           key="card-collapsed"
           className={`relative flex flex-col glass rounded-xl shadow-lg text-white transition-all duration-300 cursor-pointer overflow-hidden
-            ${isTablet ? "w-[250px] basis-[250px] min-h-[500px] grow-1" : "w-[370px] min-h-[600px]"}
+            ${isTablet ? "w-[22em] basis-[22em] min-h-[600px]" : "w-[370px] min-h-[600px]"}
             `}
           onClick={onToggle}
           style={{
@@ -333,7 +334,7 @@ export default function AnimatedCard({
       ) : (
         <motion.div
           key="card-expanded"
-          className="fixed inset-0 z-50 flex items-center justify-center"
+          className={`fixed inset-0 z-50 flex items-center justify-center ${isMobile ? "bg-black/30 backdrop-blur-sm" : ""}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -383,12 +384,12 @@ export default function AnimatedCard({
                   {title}
                 </motion.h3>
                 <motion.button
-                  className="flex items-center justify-center p-3 border border-white/30 rounded-full hover:bg-white/10 transition-colors"
+                  className="flex items-center justify-center p-6 border border-white/30 rounded-3xl hover:bg-white/10 transition-colors"
                   onClick={onToggle}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Icon icon="mdi:close" className="text-white" width={24} height={24} />
+                  <Icon icon="mdi:arrow-left" className="text-white" width={32} height={32} />
                 </motion.button>
               </motion.header>
 
