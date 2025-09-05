@@ -316,7 +316,7 @@ export default function AnimatedCard({
                 <motion.h3
                   layout
                   transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                  className="text-2xl font-bold leading-tight mb-4"
+                  className="text-lg font-bold leading-tight mb-4"
                 >
                   {title}
                 </motion.h3>
@@ -338,7 +338,7 @@ export default function AnimatedCard({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.5 }}
         >
           {/* Background overlay - clicking closes the card */}
           <motion.div

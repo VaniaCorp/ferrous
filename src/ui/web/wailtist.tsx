@@ -87,7 +87,7 @@ export default function WaitlistDisplay() {
   return (
     <div
       id="waitlist"
-      className="relative w-full h-screen max-h-[75em] mx-auto flex flex-col"
+      className="relative w-full h-[30em] lg:h-screen lg:max-h-[75em] mx-auto flex flex-col"
     >
       <section className="absolute top-[13%] left-[50%] translate-x-[-50%] w-max h-max mx-auto flex flex-col gap-4">
         <span className="text-2xl">Join Our</span>
@@ -96,7 +96,7 @@ export default function WaitlistDisplay() {
             as="h1" 
             aria-label="Waitlist" 
             aria-labelledby="waitlist" 
-            className="lg:!text-[12em] !text-[8em]"
+            className="lg:!text-[12em] md:!text-[8em] !text-[4em]"
           >
             WAITLIST
           </TextStaggerUpAnimation>
@@ -118,7 +118,7 @@ export default function WaitlistDisplay() {
             name="email" 
             id="waitlist-email" 
             placeholder="Enter your email" 
-            className="absolute top-0 left-0 w-full h-full p-4 text-base text-black rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 no-smooth-scroll" 
+            className="absolute top-0 left-0 w-full h-full p-2 md:p-4 text-base text-black rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 no-smooth-scroll" 
             aria-label="Email address for waitlist"
           />
           <button 
@@ -131,12 +131,12 @@ export default function WaitlistDisplay() {
         </span>
       </div>
 
-      <footer className="relative w-full h-max glass flex rounded-none">
+      <footer className="relative w-full h-max glass hidden lg:flex rounded-none">
         <div className="w-full h-full mx-auto bg-black/65 backdrop-blur-sm">
           <div className="w-full h-full max-w-7xl mx-auto py-8 px-8 xl:px-4 xl:py-20 flex items-center justify-between">
             <aside className="flex items-center gap-4">
               <span 
-                className="font-maesiez text-2xl cursor-pointer transition-colors duration-200 hover:text-orange-300" 
+                className="font-maesiez text-4xl cursor-pointer transition-colors duration-200 hover:text-orange-300" 
                 aria-label="Ferrous logo" 
                 tabIndex={0}
                 onClick={scrollToTop}

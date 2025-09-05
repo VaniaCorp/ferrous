@@ -17,6 +17,8 @@ import Image from 'next/image';
 import Partner from '@/ui/web/partner';
 import InitialLoader from '@/layout/loader';
 import { gsap } from 'gsap';
+import useDeviceSize from '@/hooks/useDeviceSize';
+import MobileMenu from '@/layout/mobile-menu';
 
 export default function Home() {
   const [hideSocials, setHideSocials] = useState<boolean>(false);
@@ -24,10 +26,11 @@ export default function Home() {
   const [isLoaderComplete, setIsLoaderComplete] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
+  const { isMobile } = useDeviceSize();
 
   useEffect(() => {
     if (typeof document === "undefined") return;
-    
+
     const waitlistEl = document.getElementById("waitlist");
     if (!waitlistEl) return;
 
@@ -50,23 +53,11 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (isLoaderComplete && pageRef.current) {
-      // Prevent scroll during transition
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-      
-      // Fade in the page
-      gsap.to(pageRef.current, {
-        opacity: 1,
-        duration: 0.2,
-        ease: "power2.out",
-        onComplete: () => {
-          setIsPageVisible(true);
-          // Re-enable scroll after page is visible
-          document.body.style.overflow = '';
-          document.documentElement.style.overflow = '';
-        }
-      });
+    if (isLoaderComplete) {
+      setIsPageVisible(true);
+      // Re-enable scroll after loader completes
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     }
   }, [isLoaderComplete]);
 
@@ -75,16 +66,15 @@ export default function Home() {
   };
 
   if (!isLoaderComplete) {
-    return <InitialLoader onComplete={handleLoaderComplete} />;
+    return <InitialLoader onComplete={handleLoaderComplete} pageRef={pageRef} />;
   }
 
   return (
-    <div 
+    <div
       ref={pageRef}
-      className="opacity-0"
-      style={{ opacity: 0 }}
+      className="w-full"
     >
-      <Navbar />
+      {isMobile ? <MobileMenu /> : <Navbar />}
 
       <HeroText isVisible={isPageVisible} />
 
@@ -99,8 +89,6 @@ export default function Home() {
       <Details />
 
       <Partner />
-
-      <WaitlistDisplay />
 
       <nav
         className={`fixed top-1/2 -translate-y-1/2 right-[5%] hidden md:flex flex-col gap-4 transition-all duration-500 z-50 ${hideSocials
@@ -135,21 +123,23 @@ export default function Home() {
         width={0}
         height={0}
         fetchPriority="high"
-        className={`w-full h-full object-fill fixed top-56 -left-[30%] inset-0 -z-10 transition-opacity duration-300 
+        className={`w-full lg:h-full object-fill fixed top-[80%] lg:top-56 -left-[30%] inset-0 -z-10 transition-opacity duration-300 
           ${isGameComplete ? "opacity-0" : "opacity-100"
           }`}
         draggable={false}
         unoptimized
       />
 
+      <WaitlistDisplay />
+
       <Image
-        src="/videos/earth-colour.gif"
+        src="/videos/colour-earth.gif"
         alt="Rotating colour earth"
         width={0}
         height={0}
         fetchPriority="high"
-        className={`w-full h-full object-cover fixed top-[40%] -left-[35%] inset-0 -z-10 transition-opacity duration-300 
-          ${isGameComplete ? "opacity-100" : "opacity-0"
+        className={`w-full lg:h-full object-cover fixed top-[74%] lg:top-[10%] -left-[0%] inset-0 -z-10 transition-opacity duration-300 
+          ${isGameComplete ? "opacity-50" : "opacity-0"
           }`}
         draggable={false}
         unoptimized

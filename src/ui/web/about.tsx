@@ -313,22 +313,22 @@ export default function About() {
         }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light max-md:!text-lg max-xl:!text-3xl">
+        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
           Ferrous bridges blocked
         </TextParagraphAnimation>
-        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light max-md:!text-lg max-xl:!text-3xl">
+        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
           economies to the global money pool turning
         </TextParagraphAnimation>
         <span className="flex items-center space-x-1 md:space-x-3">
-          <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light max-md:!text-lg max-xl:!text-3xl">
+          <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
             local
           </TextParagraphAnimation>
           <Image src={'/images/money-bar.svg'} width={isMobile ? 0 : 58} height={isMobile ? 0 : 58} alt="" />
-          <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light max-md:!text-lg max-xl:!text-3xl">
+          <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
             currency into smart investments using
           </TextParagraphAnimation>
         </span>
-        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light max-md:!text-lg max-xl:!text-3xl">
+        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
           AI and DeFi
         </TextParagraphAnimation>
       </motion.div>
@@ -336,7 +336,7 @@ export default function About() {
       {/* Article section - animates in after upper */}
       <motion.article
         ref={articleRef}
-        className="relative w-full max-w-6xl h-96 flex items-center justify-center overflow-hidden py-6"
+        className="relative w-full max-w-4xl xl:max-w-6xl h-96 flex items-center justify-center overflow-hidden py-6"
         aria-label="About Ferrous details"
         role="region"
         initial={{ opacity: 0, y: 50 }}
@@ -368,7 +368,7 @@ export default function About() {
           {paragraphs.map((line, idx) => (
             <motion.p
               key={idx}
-              className="!text-lg leading-relaxed transition-all duration-300 text-center"
+              className="!text-md lg:!text-lg leading-relaxed transition-all duration-300 text-center"
               style={{
                 opacity: isReducedMotion ? 1 : getParagraphOpacity(idx),
                 transform: `translateY(${visibleParagraphs.includes(idx) ? 0 : 10}px)`,
