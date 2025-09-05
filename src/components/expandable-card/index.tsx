@@ -24,7 +24,7 @@ export default function ExpandableCard({
   // If expandedProp is undefined, manage state internally
   const [internalExpanded, setInternalExpanded] = useState(false);
   const expanded = expandedProp !== undefined ? expandedProp : internalExpanded;
-  const isMobile = useDeviceSize();
+  const { isMobile } = useDeviceSize();
 
   const handleToggle = () => {
     if (onToggle) {
@@ -40,14 +40,13 @@ export default function ExpandableCard({
       transition={{ layout: { duration: 0.4, type: "spring" } }}
       className={`relative glass rounded-xl p-6 text-left shadow-lg text-white/90 flex flex-col gap-4 cursor-pointer 
         ${className}
-        ${isMobile ? "w-[20em]" : ""}
+        ${expanded ? "w-[32em]" : isMobile ? "w-[20em]" : "w-[22em]"}
       `}
       style={{
         background: "#71460040",
         color: "#fff",
         boxShadow: "0 4px 24px 0 rgba(0,0,0,0.15)",
-        width: expanded ? "32rem" : "26rem", // max-w-md = 28rem, initial = 18rem
-        height: expanded ? "36rem" : "18rem",  // initial height, expanded auto
+        height: expanded ? "32em" : "20em",
         overflow: "hidden",
         transition: "width 0.4s cubic-bezier(0.22, 1, 0.36, 1), height 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
       }}
@@ -62,7 +61,7 @@ export default function ExpandableCard({
         aria-expanded={expanded}
         tabIndex={0}
       >
-        <h3 className="font-bold text-lg mb-2">{title}</h3>
+        <h3 className="font-bold mb-2">{title}</h3>
       </button>
       <AnimatePresence initial={false}>
         {expanded ? (
@@ -102,21 +101,18 @@ export default function ExpandableCard({
           aria-label={expanded ? "Show less" : "Show more"}
         >
           <span
-            className={`block w-2 h-2 rounded-full transition-colors ${
-              expanded ? "bg-white/80" : "bg-white/40"
-            }`}
+            className={`block w-2 h-2 rounded-full transition-colors ${expanded ? "bg-white/80" : "bg-white/40"
+              }`}
           />
           <span
-            className={`block w-2 h-2 rounded-full transition-colors ${
-              expanded ? "bg-white/80" : "bg-white/40"
-            }`}
+            className={`block w-2 h-2 rounded-full transition-colors ${expanded ? "bg-white/80" : "bg-white/40"
+              }`}
           />
           <span
-            className={`block w-2 h-2 rounded-full transition-all ${
-              expanded
+            className={`block w-2 h-2 rounded-full transition-all ${expanded
                 ? "bg-white/80"
                 : "bg-white/40"
-            }`}
+              }`}
           />
         </button>
       </div>

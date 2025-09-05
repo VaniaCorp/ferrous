@@ -69,7 +69,7 @@ export default function Navbar() {
       role="banner"
       aria-label="Site Navigation"
     >
-      <span className="font-maesiez text-2xl" aria-label="Ferrous logo" tabIndex={-1}>
+      <span className="font-maesiez text-6xl" aria-label="Ferrous logo" tabIndex={-1}>
         FERROUS
       </span>
       <nav

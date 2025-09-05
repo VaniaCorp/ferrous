@@ -2,6 +2,24 @@
 
 import { useState, useEffect } from "react";
 
+/**
+ * useDeviceSize
+ * 
+ * Returns booleans for isMobile, isTablet, isDesktop, and the current width.
+ * 
+ * Example usage:
+ * 
+ *   import useDeviceSize from "@/hooks/useDeviceSize";
+ *   
+ *   function MyComponent() {
+ *     const { isMobile, isTablet, isDesktop, width } = useDeviceSize();
+ *     
+ *     if (isMobile) return <MobileMenu />;
+ *     if (isTablet) return <TabletMenu />;
+ *     return <DesktopMenu />;
+ *   }
+ * 
+ */
 const useDeviceSize = () => {
   const [width, setWidth] = useState<number | null>(null);
 
