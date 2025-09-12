@@ -19,6 +19,7 @@ import InitialLoader from '@/layout/loader';
 import { gsap } from 'gsap';
 import useDeviceSize from '@/hooks/useDeviceSize';
 import MobileMenu from '@/layout/mobile-menu';
+import { FooterTrack } from '@/layout/mobile-footer';
 
 export default function Home() {
   const [hideSocials, setHideSocials] = useState<boolean>(false);
@@ -72,7 +73,7 @@ export default function Home() {
   return (
     <div
       ref={pageRef}
-      className="w-full"
+      className="relative w-full"
     >
       {isMobile ? <MobileMenu /> : <Navbar />}
 
@@ -129,6 +130,8 @@ export default function Home() {
         draggable={false}
         unoptimized
       />
+
+      {isMobile ? <FooterTrack /> : null}
 
       <WaitlistDisplay />
 

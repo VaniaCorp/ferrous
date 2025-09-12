@@ -40,7 +40,7 @@ export default function ExpandableCard({
       transition={{ layout: { duration: 0.4, type: "spring" } }}
       className={`relative glass rounded-xl p-6 text-left shadow-lg text-white/90 flex flex-col gap-4 cursor-pointer 
         ${className}
-        ${expanded ? "w-[32em]" : isMobile ? "w-[20em]" : "w-[22em]"}
+        ${isMobile ? "w-[20em]" : expanded ? "w-[32em]" : "w-[24em]"}
       `}
       style={{
         background: "#71460040",

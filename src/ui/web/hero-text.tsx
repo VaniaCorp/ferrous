@@ -1,4 +1,5 @@
 import { TextUpAnimation } from "@/animations/text-animation";
+import useDeviceSize from "@/hooks/useDeviceSize";
 import { useEffect, useState } from "react";
 
 interface HeroTextProps {
@@ -7,6 +8,7 @@ interface HeroTextProps {
 
 export default function HeroText({ isVisible }: HeroTextProps) {
   const [shouldAnimate, setShouldAnimate] = useState(false);
+  const { isMobile } = useDeviceSize();
 
   useEffect(() => {
     if (isVisible) {
@@ -14,7 +16,7 @@ export default function HeroText({ isVisible }: HeroTextProps) {
       const timer = setTimeout(() => {
         setShouldAnimate(true);
       }, 100);
-      
+
       return () => clearTimeout(timer);
     }
   }, [isVisible]);
@@ -22,10 +24,23 @@ export default function HeroText({ isVisible }: HeroTextProps) {
   return (
     <div className="w-full max-w-7xl h-screen max-h-[50em] lg:px-16 mx-auto mt-72 flex flex-col gap-4">
       <div className="leading-none -space-y-4">
-        <TextUpAnimation as="h1" shouldAnimate={shouldAnimate}>
-          WELCOME TO THE VAST
-        </TextUpAnimation> <br />
-        <TextUpAnimation as="h1" shouldAnimate={shouldAnimate}>
+        {isMobile ? (
+          <>
+            <TextUpAnimation as="h1" shouldAnimate={shouldAnimate}>
+              WELCOME TO THE
+            </TextUpAnimation>
+            <TextUpAnimation as="h1" className="mt-2" shouldAnimate={shouldAnimate}>
+              VAST
+            </TextUpAnimation> <br />
+          </>
+        ) : (
+          <>
+            <TextUpAnimation as="h1" shouldAnimate={shouldAnimate}>
+              WELCOME TO THE VAST
+            </TextUpAnimation> <br />
+          </>
+        )}
+        <TextUpAnimation as="h1" className={isMobile ? "mb-2" : ""} shouldAnimate={shouldAnimate}>
           <span className="yellow-underline">UNEXPLORED</span> <br />
         </TextUpAnimation>
         <TextUpAnimation as="h1" className="max-md:mt-2" shouldAnimate={shouldAnimate}>

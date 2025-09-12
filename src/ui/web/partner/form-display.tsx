@@ -3,6 +3,7 @@ import { useState, useCallback } from "react";
 import { motion } from "motion/react";
 import Lottie from "lottie-react";
 import rocketFlight from "@/lottie/rocket-flight-lottie.json";
+import rocketFlightInitial from "@/lottie/rocket-hover-lottie.json";
 import { partnerQA } from "./_data";
 import FormInput from "@/components/form-input";
 
@@ -13,9 +14,9 @@ interface FormDisplayProps {
   animationState: AnimationState;
 }
 
-export default function FormDisplay({ 
-  onSubmit, 
-  animationState 
+export default function FormDisplay({
+  onSubmit,
+  animationState
 }: FormDisplayProps) {
   const [formData, setFormData] = useState({
     name: '',
@@ -37,7 +38,7 @@ export default function FormDisplay({
         {animationState === 'form' && (
           <>
             {/* FAQ Section */}
-            <motion.aside 
+            <motion.aside
               className="relative glass w-full max-w-xl h-[30em] rounded-2xl overflow-hidden"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -46,8 +47,8 @@ export default function FormDisplay({
             >
               <div className="color-container p-4 overflow-x-hidden">
                 {partnerQA.map((item, idx) => (
-                  <motion.div 
-                    key={idx} 
+                  <motion.div
+                    key={idx}
                     className="p-4 space-y-5"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -64,7 +65,7 @@ export default function FormDisplay({
             </motion.aside>
 
             {/* Form Section */}
-            <motion.section 
+            <motion.section
               className="relative glass w-full max-w-lg h-[40em] rounded-2xl overflow-hidden"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
@@ -84,7 +85,7 @@ export default function FormDisplay({
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   />
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -97,7 +98,7 @@ export default function FormDisplay({
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   />
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -110,7 +111,7 @@ export default function FormDisplay({
                     onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
                   />
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -124,8 +125,8 @@ export default function FormDisplay({
                   />
                 </motion.div>
 
-                <motion.button 
-                  type="submit" 
+                <motion.button
+                  type="submit"
                   className="w-full p-4 text-base font-sans glass rounded-2xl hover:scale-105 transition-transform duration-300"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -150,7 +151,7 @@ export default function FormDisplay({
             transition={{ duration: 0.5, ease: "easeInOut" }}
           >
             <div className="text-center space-y-8">
-              <motion.h2 
+              <motion.h2
                 className="!font-dm-mono !font-light text-5xl"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -165,17 +166,24 @@ export default function FormDisplay({
 
       {/* Rocket Animation - Fixed position, maintains space */}
       <div className="w-[30em] h-full">
-        <motion.div 
+        <motion.div
           className="w-full h-full"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <Lottie
-            animationData={rocketFlight}
-            loop={true}
-            className="w-full h-full"
-          />
+          {animationState === 'submitting' ? (
+            <Lottie
+              animationData={rocketFlight}
+              loop={true}
+              className="w-full h-full"
+            />) : (
+            <Lottie
+              animationData={rocketFlightInitial}
+              loop={true}
+              className="w-full h-full"
+            />
+          )}
         </motion.div>
       </div>
     </div>

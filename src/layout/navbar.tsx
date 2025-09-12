@@ -65,11 +65,11 @@ export default function Navbar() {
 
   return (
     <div
-      className="fixed top-9 left-[50%] translate-x-[-50%] w-full max-w-6xl mx-auto flex items-center justify-between z-50"
+      className="fixed top-9 left-[50%] translate-x-[-50%] w-full max-w-6xl max-xl:px-12 mx-auto flex items-center justify-between z-50"
       role="banner"
       aria-label="Site Navigation"
     >
-      <span className="font-maesiez text-6xl" aria-label="Ferrous logo" tabIndex={-1}>
+      <span className="font-maesiez text-5xl" aria-label="Ferrous logo" tabIndex={-1}>
         FERROUS
       </span>
       <nav
