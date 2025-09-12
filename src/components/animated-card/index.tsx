@@ -316,7 +316,7 @@ export default function AnimatedCard({
                 <motion.h3
                   layout
                   transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                  className="text-lg font-bold leading-tight mb-4"
+                  className="lg:!text-2xl font-bold leading-tight mb-4"
                 >
                   {title}
                 </motion.h3>
@@ -384,7 +384,7 @@ export default function AnimatedCard({
                   {title}
                 </motion.h3>
                 <motion.button
-                  className="flex items-center justify-center p-6 border border-white/30 rounded-3xl hover:bg-white/10 transition-colors"
+                  className="flex items-center justify-center p-3 md:p-6 border border-white/30 rounded-full md:rounded-3xl hover:bg-white/10 transition-colors"
                   onClick={onToggle}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

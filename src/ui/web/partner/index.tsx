@@ -39,7 +39,7 @@ export default function Partner() {
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
             <motion.section 
-              className="relative glass w-full max-w-[20em] lg:max-w-2xl h-52 lg:h-84 rounded-2xl p-4 flex flex-col overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+              className="relative glass w-full max-w-sm xl:max-w-xl h-52 lg:h-84 rounded-2xl p-4 flex flex-col overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
               onClick={handleBoxClick}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}

@@ -348,7 +348,7 @@ export default function About() {
       >
         <div
           ref={scrollRef}
-          className="prose prose-invert prose-2xl text-white/90 space-y-12 text-center relative w-full h-full overflow-y-auto focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg"
+          className="prose prose-invert prose-base md:prose-2xl text-white/90 space-y-12 text-center relative w-full h-full overflow-y-auto focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
