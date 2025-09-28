@@ -71,7 +71,8 @@ export default function Features() {
               <AnimatedCard
                 imageSrc={feature.image}
                 title={feature.title}
-                content={feature.description}
+                description={feature.description}
+                content={feature.content}
                 isExpanded={false}
                 onToggle={() => handleCardToggle(feature.title)}
               />
@@ -86,7 +87,8 @@ export default function Features() {
                 key={feature.title}
                 imageSrc={feature.image}
                 title={feature.title}
-                content={feature.description}
+                description={feature.description}
+                content={feature.content}
                 isExpanded={true}
                 onToggle={handleClose}
               />

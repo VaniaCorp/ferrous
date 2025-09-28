@@ -6,16 +6,19 @@ import rocketFlight from "@/lottie/rocket-flight-lottie.json";
 import rocketFlightInitial from "@/lottie/rocket-hover-lottie.json";
 import { partnerQA } from "./_data";
 import FormInput from "@/components/form-input";
+import { Icon } from "@iconify/react";
 
 type AnimationState = 'initial' | 'form' | 'submitting' | 'completed';
 
 interface FormDisplayProps {
   onSubmit: () => void;
+  onBack: () => void;
   animationState: AnimationState;
 }
 
 export default function FormDisplay({
   onSubmit,
+  onBack,
   animationState
 }: FormDisplayProps) {
   const [formData, setFormData] = useState({
@@ -45,7 +48,13 @@ export default function FormDisplay({
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="color-container p-4 overflow-x-hidden">
+              <div className="color-container p-4 flex flex-col overflow-x-hidden">
+                <button 
+                  className="w-max p-4 border rounded-full flex items-center justify-center hover:scale-105 transition-transform duration-300"
+                  onClick={onBack}
+                >
+                  <Icon icon="mdi:arrow-left" width={24} height={24} />
+                </button>
                 {partnerQA.map((item, idx) => (
                   <motion.div
                     key={idx}
@@ -80,22 +89,9 @@ export default function FormDisplay({
                 >
                   <FormInput
                     type="text"
-                    label="Full Name"
+                    label="Name"
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  />
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.7 }}
-                >
-                  <FormInput
-                    type="email"
-                    label="Email Address"
-                    value={formData.email}
-                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   />
                 </motion.div>
 
@@ -109,6 +105,19 @@ export default function FormDisplay({
                     label="Company Name"
                     value={formData.company}
                     onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
+                  />
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                >
+                  <FormInput
+                    type="email"
+                    label="Email"
+                    value={formData.email}
+                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   />
                 </motion.div>
 
@@ -157,7 +166,7 @@ export default function FormDisplay({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                Welcome to the Family
+                We&apos;ll be in touch
               </motion.h2>
             </div>
           </motion.div>

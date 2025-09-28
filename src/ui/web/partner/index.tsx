@@ -2,7 +2,6 @@ import { useState, useCallback } from "react";
 import Lottie from "lottie-react";
 import { motion, AnimatePresence } from "motion/react";
 import rocket from "@/lottie/rocket-hover-lottie.json";
-import rocketFlight from "@/lottie/rocket-flight-lottie.json";
 import { cn } from "@/lib/utils";
 import FormDisplay from "./form-display";
 
@@ -26,6 +25,10 @@ export default function Partner() {
     }, 1000);
   }, []);
 
+  const handleBack = useCallback(() => {
+    setAnimationState('initial');
+  }, []);
+
   return (
     <div className="relative w-full h-full xl:h-screen flex items-center justify-center">
       <AnimatePresence mode="wait">
@@ -45,7 +48,7 @@ export default function Partner() {
               whileTap={{ scale: 0.98 }}
             >
               <div className="absolute top-0 left-0 w-full h-full bg-olive-transparent pointer-events-none"></div>
-              <h1>Partner With Us</h1>
+              <h1 className="md:!text-7xl">Why Partner With Us?</h1>
 
               <div className="w-max mt-auto space-x-1">
                 <motion.span 
@@ -87,6 +90,7 @@ export default function Partner() {
           >
             <FormDisplay 
               onSubmit={handleFormSubmit}
+              onBack={handleBack}
               animationState={animationState}
             />
           </motion.div>

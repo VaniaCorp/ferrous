@@ -5,26 +5,27 @@ export default function Info() {
   return (
     <div id="info" className="w-full max-w-7xl h-screen max-h-[50em] lg:px-16 mx-auto flex flex-col gap-12">
       <div className="leading-none max-md:space-y-1">
-        <TextUpAnimation as="h1">
+        <TextUpAnimation as="h1" className="!font-mono">
           <span className="yellow-underline">UNEXPLORED</span> AND <br />
         </TextUpAnimation>
-        <TextUpAnimation as="h1">
+        <TextUpAnimation as="h1" className="!font-mono">
           PURPOSELY <br />
         </TextUpAnimation>
-        <TextUpAnimation as="h1">
+        <TextUpAnimation as="h1" className="!font-mono">
           HIDDEN FROM REACH
         </TextUpAnimation>
       </div>
 
       <article className="w-full max-w-lg h-max max-h-96 overflow-y-auto flex flex-col gap-8">
         <p>
-          <strong>AFRICA</strong> ipsum dolor sit amet consectetur. Id facilisi arcu nec ac dui ut a non.
-          Pharetra orci egestas sed sit in interdum mauris nulla
+          <strong>Ferrous</strong> connects the emerging market to the global blockchain
+          economy. We offer financial empowerment by bridging your local currency directly to world-class assets.
         </p>
 
         <p>
-          Lorem ipsum dolor sit amet consectetur. Id facilisi arcu nec ac dui ut a non.
-          Pharetra orci egestas sed sit in interdum mauris nulla
+          We eliminate the practical barriers and technical friction that previously made 
+          high-yield opportunities inaccessible, giving you direct access to a curated 
+          selection of yields and tokenized real-world assets. Deposit local, invest global: Discover your financial liberation.
         </p>
       </article>
     </div>

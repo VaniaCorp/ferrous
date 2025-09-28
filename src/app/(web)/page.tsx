@@ -2,6 +2,8 @@
 import Lottie from 'lottie-react';
 import React, { useEffect, useState, useRef } from 'react';
 import glowAnimation from "@/lottie/glow.json";
+import blackWorldAnimation from "@/lottie/black-world-lottie.json";
+import colouredWorldAnimation from "@/lottie/coloured-world-lottie.json";
 import HeroText from '@/ui/web/hero-text';
 import Info from '@/ui/web/info';
 import MiniGame from '@/ui/web/mini-game';
@@ -118,35 +120,55 @@ export default function Home() {
         ))}
       </nav>
 
-      <Image
-        src="/videos/earth-gray.gif"
-        alt="Rotating gray earth"
-        width={0}
-        height={0}
-        fetchPriority="high"
-        className={`w-full lg:h-full object-fill fixed top-[80%] lg:top-56 -left-[30%] inset-0 -z-10 transition-opacity duration-300 
+
+      {isMobile ? (
+        <Image
+          src="/images/mobile-black-world.gif"
+          alt='Black World'
+          width={0}
+          height={0}
+          className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300
+            ${isGameComplete ? "opacity-0" : "opacity-40"}
+            `}
+        />
+      ) : (
+        <Lottie
+          animationData={blackWorldAnimation}
+          alt="Rotating gray earth"
+          width={0}
+          height={0}
+          className={`w-full lg:h-full object-fill fixed top-[0%] lg:top-56 -left-[0%] inset-0 -z-10 transition-opacity ease-in-out duration-300 
           ${isGameComplete ? "opacity-0" : "opacity-100"
-          }`}
-        draggable={false}
-        unoptimized
-      />
+            }`}
+        />
+      )}
 
       {isMobile ? <FooterTrack /> : null}
 
       <WaitlistDisplay />
 
-      <Image
-        src="/videos/colour-earth.gif"
-        alt="Rotating colour earth"
-        width={0}
-        height={0}
-        fetchPriority="high"
-        className={`w-full lg:h-full object-cover fixed top-[74%] lg:top-[10%] -left-[0%] inset-0 -z-10 transition-opacity duration-300 
-          ${isGameComplete ? "opacity-50" : "opacity-0"
-          }`}
-        draggable={false}
-        unoptimized
-      />
+
+      {isMobile ? (
+        <Image
+          src="/images/mobile-color-world.gif"
+          alt='Colour World'
+          width={0}
+          height={0}
+          className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300
+            ${isGameComplete ? "opacity-50" : "opacity-0"}
+            `}
+        />
+      ) : (
+        <Lottie
+          animationData={colouredWorldAnimation}
+          alt="Rotating colour earth"
+          width={0}
+          height={0}
+          className={`w-full h-full object-cover fixed top-[74%] lg:top-[20%] -left-[0%] inset-0 -z-10 transition-all ease-in-out duration-300 
+            ${isGameComplete ? "opacity-50" : "opacity-0"
+            }`}
+        />
+      )}
 
       <Lottie
         animationData={glowAnimation}

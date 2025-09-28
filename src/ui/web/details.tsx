@@ -9,38 +9,38 @@ import Lottie, { LottieRefCurrentProps } from "lottie-react";
 const data = [
   {
     id: 1,
-    title: "Mobile Money Integration",
+    title: "Local Money Integration",
     content:
-      "Ferrous integrates with mobile wallets like M-Pesa, MTN Mobile Money, and bank transfers enabling local deposits with no banking barriers or international card limitations. The platform removes the complexity of Web3—no wallets, no gas fees, no seed phrases. Just tap, invest, and grow. All the tech is abstracted under the hood.",
+      "Ferrous streamlines your financial journey through Local Money Integration, leveraging strategic partnerships with specialized on-ramp and off-ramp providers to ensure a truly seamless transition between your traditional bank account and the world of tokenized assets. This robust integration allows for local deposits where you can effortlessly convert your domestic currency into digital assets using familiar local payment rails, simultaneously eliminating the hurdle of high currency conversion fees and the lengthy delays of international bank transfers. Conversely, the system facilitates equally smooth local withdrawals, enabling you to convert your tokenized holdings back into your local fiat currency and have funds deposited directly into your bank account. By handling all the technical and regulatory complexity, Ferrous effectively removes restrictive banking barriers or international card limitations, making secure, stable, global investment accessible and instantaneous for users in any emerging economy.",
     truncatedContent:
-      "Ferrous integrates with mobile wallets like M-Pesa, MTN Mobile Money, and bank transfers enabling local deposits with no banking barriers or international card limitations.",
+      "Ferrous integrates with on-ramp and off-ramp providers for seamless transfers enabling local deposits and withdrawals with no banking barriers or international card limitations.",
     animationData: moneyLottie,
   },
   {
     id: 2,
-    title: "AI-Driven Investment Engine",
+    title: "Context Aware AI Engine",
     content:
-      "The platform removes the complexity of Web3—no wallets, no gas fees, no seed phrases. Just tap, invest, and grow. All the tech is abstracted under the hood. Gas fees? Seed phrases? Wallet addresses? We handle all of that for you so you can focus on what matters: growing your investment.",
+      "Ferrous utilizes its Context-Aware AI Engine to operate as a personalized digital asset advisor, continuously analyzing multiple data streams to optimize your investment outcomes. This engine works by studying user behavior, understanding your risk tolerance and investment goals to tailor suggestions directly to your needs. Simultaneously, it ingests and processes real-time market conditions and asset performance data—from tokenized gold price movements to bond yield fluctuations—to accurately detect risks before they impact your portfolio. The result is a highly personalized experience that delivers precise, localized suggestions for asset allocation and automated portfolio adjustments. Ultimately, this AI-driven approach ensures a smooth, highly customized, and localized user experience, providing proactive risk management and intelligent guidance to foster stable growth.",
     truncatedContent:
-      "A powerful AI guides users through personalized investment strategies based on their income, goals, and risk tolerance automating decisions previously reserved for expert advisors.",
+      "Ferrous context-aware AI engine analyzes user behavior, market conditions, and asset performance to deliver personalized suggestions, detect risks and ensure smooth, localized user experiences.",
     animationData: walletLottie,
   },
   {
     id: 3,
-    title: "Stablecoin-Powered Asset Access",
+    title: "Access To Diverse Assets",
     content:
-      "The platform removes the complexity of Web3—no wallets, no gas fees, no seed phrases. Just tap, invest, and grow. All the tech is abstracted under the hood. Gas fees? Seed phrases? Wallet addresses? We handle all of that for you so you can focus on what matters: growing your investment.",
+      "Ferrous powers your investment with Stablecoin-Powered Asset Access by establishing stablecoins as the secure foundation for acquiring a highly diverse array of tokenized assets. This approach allows you to seamlessly move from holding safe, yield-bearing stablecoins (like USD-pegged tokens) directly into sophisticated financial instruments. You gain immediate access to low-volatility assets such as tokenized bonds and treasuries, which convert reliable fixed-income streams onto the blockchain, as well as tokenized precious metals like gold, backed by verifiable physical reserves. This stablecoin-based mechanism eliminates the friction and risk of constant fiat-to-crypto conversions and instantly denominates your entire portfolio in a stable currency, ultimately democratizing access to these global financial instruments for predictable, secure growth.",
     truncatedContent:
-      "Ferrous enables seamless deposits via mobile money and local banks, eliminating foreign exchange barriers and making global investment accessible with the currencies people already use and trust.",
+      "Ferrous provides you access to plethora of tokenized real world assets, from yield bearing stablecoins, bonds, treasuries, precious metals; gold, and many global financial instruments.",
     animationData: fireLottie,
   },
   {
     id: 4,
     title: "Zero Jargon User Experience",
     content:
-      "The platform removes the complexity of Web3—no wallets, no gas fees, no seed phrases. Just tap, invest, and grow. All the tech is abstracted under the hood. Gas fees? Seed phrases? Wallet addresses? We handle all of that for you so you can focus on what matters: growing your investment.",
+      "Ferrous ensures a Zero Jargon User Experience by abstracting away the inherent technical complexity of blockchain and decentralized finance (DeFi) so that you can focus purely on investment. We handle the 'magic' of managing wallets, private keys, gas fees, and smart contract interactions, ensuring all the difficult, low-level mechanics are completely built-in and invisible to you. Your interaction is deliberately simple: you just Tap and access global opportunities! This approach of radical simplification applies to every step, from on-ramping your local currency to instantly purchasing tokenized assets. Our core commitment is making the entire process utterly seamless, allowing even users new to digital finance to engage with sophisticated global markets without needing any prior knowledge of blockchain terminology or infrastructure.",
     truncatedContent:
-      "The platform removes the complexity of Web3 no wallets, no gas fees, no seed phrases. Just tap, invest, and grow. All the tech is abstracted under the hood.",
+      "Ferrous removes all the complexity. The magic is built-in, we handle it. Your part is simple: Tap and access global opportunities! Our part is making it seamless.",
     animationData: phoneLottie,
   },
 ];
