@@ -313,15 +313,37 @@ export default function About() {
         }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
-          Ferrous bridges emerging
-        </TextParagraphAnimation>
-        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
-          economies to the global money pool by connecting
-        </TextParagraphAnimation>
-        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
-          your local currency to a broad array of tokenized real world assets
-        </TextParagraphAnimation>
+        {isMobile ? (
+          <>
+            <TextParagraphAnimation as={"h3"} className="!font-light">
+              Ferrous bridges emerging
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h3"} className="!font-light">
+              economies to the global
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h3"} className="!font-light">
+              money pool by connecting
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h3"} className="!font-light">
+              your local currency to a broad
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h3"} className="!font-light">
+              array of tokenized real world assets
+            </TextParagraphAnimation>
+          </>
+        ) : (
+          <>
+            <TextParagraphAnimation as={"h2"} className="!font-light">
+              Ferrous bridges emerging
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h2"} className="!font-light">
+              economies to the global money pool by connecting
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h2"} className="!font-light">
+              your local currency to a broad array of tokenized real world assets
+            </TextParagraphAnimation>
+          </>
+        )}
       </motion.div>
 
       {/* Article section - animates in after upper */}
