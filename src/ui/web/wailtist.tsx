@@ -108,11 +108,11 @@ export default function WaitlistDisplay() {
 
       <div className="relative z-10 mx-auto mt-auto">
         <Image
-          src="/images/hgiku.svg"
+          src={isMobile ? "/images/hgiku-mobile.svg" : "/images/hgiku.svg"}
           alt="Waitlist"
-          width={isMobile ? 1000 : 0}
+          width={isMobile ? 0 : 0}
           height={0}
-          className={`${isMobile ? "" : "h-full w-full object-cover"}`}
+          className={`${isMobile ? "w-full" : "h-full w-full object-cover"}`}
         />
 
         <span className={`absolute bottom-12 left-[50%] translate-x-[-50%] w-full max-w-xl p-2 bg-white rounded-2xl flex items-center gap-2 overflow-hidden ${isMobile ? "bottom-4" : "bottom-12"}`}>

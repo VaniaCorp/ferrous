@@ -7,6 +7,7 @@ import useDeviceSize from "@/hooks/useDeviceSize";
 type AnimatedCardProps = {
   imageSrc: string;
   title: string;
+  description: string;
   content: string;
   isExpanded: boolean;
   onToggle: () => void;
@@ -15,13 +16,14 @@ type AnimatedCardProps = {
 export default function AnimatedCard({
   imageSrc,
   title,
+  description,
   content,
   isExpanded,
   onToggle,
 }: AnimatedCardProps) {
   // Truncate content for collapsed state
   const truncatedContent =
-    content.length > 360 ? content.slice(0, 360) + "..." : content;
+    description.length > 360 ? description.slice(0, 360) + "..." : description;
     const isMobile = useDeviceSize();
 
   // For scrolling and fade-in effect
@@ -268,7 +270,7 @@ export default function AnimatedCard({
       {!isExpanded ? (
         <motion.div
           key="card-collapsed"
-          className={`relative flex flex-col glass rounded-xl shadow-lg text-white transition-all duration-300 cursor-pointer overflow-hidden
+          className={`relative flex flex-col glass rounded-[49px] md:rounded-xl backdrop-blur-xl lg:backdrop-blur-none shadow-lg text-white transition-all duration-300 cursor-pointer overflow-hidden
             ${isTablet ? "w-[22em] basis-[22em] min-h-[600px]" : "w-[370px] min-h-[600px]"}
             `}
           onClick={onToggle}
@@ -281,7 +283,7 @@ export default function AnimatedCard({
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           layout
         >
-          <motion.div className="absolute top-0 left-0 w-full h-full bg-olive-transparent px-8 py-12 flex items-center justify-center">
+          <motion.div className="absolute top-0 left-0 w-full h-full bg-olive-transparent/60 md:bg-olive-transparent px-8 py-12 flex items-center justify-center">
             <motion.div
               layout
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
@@ -305,7 +307,7 @@ export default function AnimatedCard({
                     width={120}
                     height={120}
                     className="object-contain max-w-full max-h-full"
-                    priority
+                    priority  
                   />
                 </motion.div>
               </motion.div>

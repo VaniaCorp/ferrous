@@ -225,7 +225,7 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
           ref={paragraphRef}
           className="w-full max-w-lg text-center text-white"
         >
-          Lorem ipsum dolor sit amet consectetur. Id facilisi arcu nec ac dui ut a non. Pharetra orci egestas sed sit in interdum mauris nulla
+          Step into a world of wealth, now within your grasp.
         </p>
       </div>
 

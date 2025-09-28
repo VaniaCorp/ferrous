@@ -5,10 +5,10 @@ import Image from "next/image";
 import React, { useRef, useEffect, useState } from "react";
 
 const aboutParagraphs = [
-  `Over 350 million adults in Africa alone remain unbanked, a staggering number that represents more than just statistics. It reflects real people, real dreams, and real barriers. And Africa isn't alone. Across many emerging economies in Latin America, Southeast Asia, and the Middle East, millions more face the same systemic challenges: limited access to formal banking, high transaction costs, restrictive international policies, and outdated financial infrastructures that were never built with them in mind.`,
-  `By leveraging the widespread adoption of mobile money and combining it with the intelligence of advanced AI, Ferrous breaks through the walls that have kept billions locked out of meaningful financial growth. The platform enables users to deposit local currency through familiar mobile channels—no international cards, no complex KYC, no friction.`,
-  `Once inside, AI does the heavy lifting—guiding users with personalized investment strategies, managing risk, and handling all the technical complexity of the global financial system in the background. No need to understand crypto. No need to study charts. Just access—seamless, transparent, and designed for inclusion.`,
-  `This is how Ferrous bridges economies once blocked by infrastructure gaps, high fees, and bureaucracy. It's not just unlocking access to global investment markets—it's rewriting the rules so that underserved populations can finally participate, prosper, and preserve their wealth on their own terms.`
+  `At Ferrous, we believe access to wealth-building opportunities shouldn't be limited to a privileged few or those already deep inside the crypto world. Traditional financial systems in emerging markets restrict individuals from participating in high-value, globally recognized assets such as gold, bonds, or treasuries. On the other hand, existing blockchain products are typically designed with crypto-native users in mind, creating barriers for everyday people who primarily earn, spend, and save in their local currencies. Ferrous was built to break this barrier—bridging local money directly to global, tokenized opportunities.`,
+  `Our platform enables users to acquire tokenized real-world assets like gold, bonds, and treasuries etc using their native currency. By removing the complexity of crypto wallets, exchanges, and multiple conversions, Ferrous makes it possible for non-crypto users to access blockchain-powered financial products without needing to be tech-savvy. Through strategic partnerships with providers, we simplify the on-ramp process, ensuring every transaction is compliant, transparent, and reliable. The result is a financial experience that feels familiar but delivers entirely new levels of access and control.`,
+  `For institutions, Ferrous represents more than just a platform, it's an onramp to a new class of users. By partnering with us, providers gain access to a vast, underserved market of individuals ready to diversify their holdings but currently excluded from traditional systems. Through our model, providers can extend their reach while Ferrous handles the localization, and user experience. This opens opportunities to expand services into emerging high-growth regions without any challenges.`,
+  // `This is how Ferrous bridges economies once blocked by infrastructure gaps, high fees, and bureaucracy. It's not just unlocking access to global investment markets—it's rewriting the rules so that underserved populations can finally participate, prosper, and preserve their wealth on their own terms.`
 ];
 
 export default function About() {
@@ -313,24 +313,37 @@ export default function About() {
         }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
-          Ferrous bridges blocked
-        </TextParagraphAnimation>
-        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
-          economies to the global money pool turning
-        </TextParagraphAnimation>
-        <span className="flex items-center space-x-1 md:space-x-3">
-          <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
-            local
-          </TextParagraphAnimation>
-          <Image src={'/images/money-bar.svg'} width={isMobile ? 0 : 58} height={isMobile ? 0 : 58} alt="" />
-          <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
-            currency into smart investments using
-          </TextParagraphAnimation>
-        </span>
-        <TextParagraphAnimation as={isMobile ? "h3" : "h2"} className="!font-light">
-          AI and DeFi
-        </TextParagraphAnimation>
+        {isMobile ? (
+          <>
+            <TextParagraphAnimation as={"h3"} className="!font-light">
+              Ferrous bridges emerging
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h3"} className="!font-light">
+              economies to the global
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h3"} className="!font-light">
+              money pool by connecting
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h3"} className="!font-light">
+              your local currency to a broad
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h3"} className="!font-light">
+              array of tokenized real world assets
+            </TextParagraphAnimation>
+          </>
+        ) : (
+          <>
+            <TextParagraphAnimation as={"h2"} className="!font-light">
+              Ferrous bridges emerging
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h2"} className="!font-light">
+              economies to the global money pool by connecting
+            </TextParagraphAnimation>
+            <TextParagraphAnimation as={"h2"} className="!font-light">
+              your local currency to a broad array of tokenized real world assets
+            </TextParagraphAnimation>
+          </>
+        )}
       </motion.div>
 
       {/* Article section - animates in after upper */}

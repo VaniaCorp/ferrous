@@ -4,7 +4,7 @@
 :root {
   --background: #000000;
   --foreground: #ededed;
-  --font-maesiez: "Maesiez", sans-serif;
+  --font-maesiez: "Maesiez", sans-serif;  
 }
 
 @theme inline {
