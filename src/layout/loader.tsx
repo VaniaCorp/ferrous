@@ -125,8 +125,8 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
   }, []);
 
   const texts = {
-    first: "THEY BUILT A POWERFUL SYSTEM",
-    second: "JUST NOT ONE FOR PEOPLE LIKE US"
+    first: "FERROUS",
+    second: "LOCAL MONEY. GLOBAL ACCESS"
   };
 
   return (
