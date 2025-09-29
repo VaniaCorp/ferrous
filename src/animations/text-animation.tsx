@@ -32,6 +32,10 @@ export function TextUpAnimation({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    if (typeof window !== 'undefined') {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return; // Skip animation for reduced motion users
+    }
     if (!containerRef.current) return;
 
     // Split into characters
@@ -103,6 +107,10 @@ export function TextStaggerUpAnimation({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    if (typeof window !== 'undefined') {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+    }
     if (!containerRef.current) return;
 
     // Split into characters
@@ -160,6 +168,10 @@ export function TextParagraphAnimation({
   const containerRef = useRef<HTMLParagraphElement>(null);
 
   useGSAP(() => {
+    if (typeof window !== 'undefined') {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+    }
     if (!containerRef.current) return;
 
     // Split into lines
@@ -320,6 +332,10 @@ export function TextWithImageAnimation({
   const imageRef = useRef<HTMLImageElement>(null);
 
   useGSAP(() => {
+    if (typeof window !== 'undefined') {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+    }
     if (!leftRef.current || !rightRef.current || !imageRef.current) return;
 
     // Split both text sections into words

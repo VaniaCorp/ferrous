@@ -1,7 +1,6 @@
 import { TextParagraphAnimation } from "@/animations/text-animation";
 import useDeviceSize from "@/hooks/useDeviceSize";
 import { motion } from "motion/react";
-import Image from "next/image";
 import React, { useRef, useEffect, useState } from "react";
 
 const aboutParagraphs = [
@@ -22,17 +21,11 @@ export default function About() {
   // State for article section
   const [articleInView, setArticleInView] = useState(false);
 
-  // State for article scrolling functionality (from animated card)
-  const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | 'none'>('none');
-  const [visibleParagraphs, setVisibleParagraphs] = useState<number[]>([]);
-  const scrollAnimationRef = useRef<number | null>(null);
-  const autoScrollRef = useRef<number | null>(null);
-  const [isAutoScrolling, setIsAutoScrolling] = useState<boolean>(true);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
 
   // Split content into paragraphs
   const paragraphs = aboutParagraphs.filter(line => line.trim() !== '');
-  const isMobile = useDeviceSize();
+  const { isMobile } = useDeviceSize();
 
   // Detect prefers-reduced-motion
   useEffect(() => {
@@ -85,233 +78,21 @@ export default function About() {
     return () => observer.disconnect();
   }, []);
 
-  // Handle mouse position for scroll direction (from animated card)
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!scrollRef.current) return;
-
-    setIsAutoScrolling(false);
-
-    const container = scrollRef.current;
-    const rect = container.getBoundingClientRect();
-    const mouseY = e.clientY - rect.top;
-    const containerHeight = rect.height;
-
-    if (mouseY < containerHeight * 0.2) {
-      setScrollDirection('up');
-    } else if (mouseY > containerHeight * 0.8) {
-      setScrollDirection('down');
-    } else {
-      setScrollDirection('none');
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setScrollDirection('none');
-    setIsAutoScrolling(true);
-  };
-
-  // Smooth scrolling animation (manual via mouse)
-  useEffect(() => {
-    if (!scrollRef.current || scrollDirection === 'none') {
-      if (scrollAnimationRef.current) {
-        cancelAnimationFrame(scrollAnimationRef.current);
-        scrollAnimationRef.current = null;
-      }
-      return;
-    }
-
-    const container = scrollRef.current;
-    const scrollSpeed = 2;
-
-    const animate = () => {
-      if (scrollDirection === 'up') {
-        container.scrollTop = Math.max(0, container.scrollTop - scrollSpeed);
-      } else if (scrollDirection === 'down') {
-        container.scrollTop = Math.min(
-          container.scrollHeight - container.clientHeight,
-          container.scrollTop + scrollSpeed
-        );
-      }
-      scrollAnimationRef.current = requestAnimationFrame(animate);
-    };
-
-    scrollAnimationRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (scrollAnimationRef.current) {
-        cancelAnimationFrame(scrollAnimationRef.current);
-        scrollAnimationRef.current = null;
-      }
-    };
-  }, [scrollDirection]);
-
-  // Auto scroll effect (from animated card)
-  useEffect(() => {
-    if (!articleInView || !scrollRef.current || isReducedMotion) {
-      if (autoScrollRef.current) {
-        cancelAnimationFrame(autoScrollRef.current);
-        autoScrollRef.current = null;
-      }
-      return;
-    }
-
-    if (!isAutoScrolling) {
-      if (autoScrollRef.current) {
-        cancelAnimationFrame(autoScrollRef.current);
-        autoScrollRef.current = null;
-      }
-      return;
-    }
-
-    const container = scrollRef.current;
-    const autoScrollSpeed = 0.5;
-    let direction: "down" | "up" = "down";
-
-    const autoScroll = () => {
-      if (!container) return;
-
-      if (container.scrollTop + container.clientHeight >= container.scrollHeight - 1) {
-        direction = "up";
-      }
-      if (container.scrollTop <= 0) {
-        direction = "down";
-      }
-
-      if (direction === "down") {
-        container.scrollTop = Math.min(
-          container.scrollHeight - container.clientHeight,
-          container.scrollTop + autoScrollSpeed
-        );
-      } else {
-        container.scrollTop = Math.max(
-          0,
-          container.scrollTop - autoScrollSpeed
-        );
-      }
-
-      autoScrollRef.current = requestAnimationFrame(autoScroll);
-    };
-
-    autoScrollRef.current = requestAnimationFrame(autoScroll);
-
-    return () => {
-      if (autoScrollRef.current) {
-        cancelAnimationFrame(autoScrollRef.current);
-        autoScrollRef.current = null;
-      }
-    };
-  }, [articleInView, isAutoScrolling, isReducedMotion]);
-
-  // Handle user scroll to pause auto scroll
-  useEffect(() => {
-    if (!articleInView || !scrollRef.current) return;
-
-    let timeout: NodeJS.Timeout | null = null;
-
-    const handleUserScroll = () => {
-      setIsAutoScrolling(false);
-      if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        setIsAutoScrolling(true);
-      }, 3000);
-    };
-
-    const container = scrollRef.current;
-    container.addEventListener("wheel", handleUserScroll, { passive: true });
-    container.addEventListener("touchmove", handleUserScroll, { passive: true });
-
-    return () => {
-      if (timeout) clearTimeout(timeout);
-      container.removeEventListener("wheel", handleUserScroll);
-      container.removeEventListener("touchmove", handleUserScroll);
-    };
-  }, [articleInView]);
-
-  // Fade-in paragraphs as they come into view
-  useEffect(() => {
-    if (!articleInView || !scrollRef.current) return;
-
-    const container = scrollRef.current;
-    const handleScroll = () => {
-      const newVisible: number[] = [];
-      const paraNodes = Array.from(container.querySelectorAll("p"));
-
-      paraNodes.forEach((node, idx) => {
-        const rect = (node as HTMLElement).getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-
-        const visibleTop = Math.max(rect.top, containerRect.top);
-        const visibleBottom = Math.min(rect.bottom, containerRect.bottom);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-
-        if (visibleHeight > 0.1 * rect.height) {
-          newVisible.push(idx);
-        }
-      });
-
-      setVisibleParagraphs(newVisible);
-    };
-
-    handleScroll();
-    container.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      container.removeEventListener("scroll", handleScroll);
-    };
-  }, [articleInView]);
-
-  // Calculate paragraph opacity based on position
-  const getParagraphOpacity = (idx: number) => {
-    if (!scrollRef.current) return visibleParagraphs.includes(idx) ? 1 : 0.3;
-
-    const container = scrollRef.current;
-    const paraNodes = Array.from(container.querySelectorAll("p"));
-    const node = paraNodes[idx] as HTMLElement;
-
-    if (!node) return 0.3;
-
-    const rect = node.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-
-    const nodeCenter = rect.top + rect.height / 2;
-    const containerCenter = containerRect.top + containerRect.height / 2;
-    const distance = Math.abs(nodeCenter - containerCenter);
-    const maxDistance = containerRect.height / 2;
-
-    const opacity = Math.max(0.2, 1 - (distance / maxDistance) * 0.8);
-    return opacity;
-  };
-
-  const autoScrollStatus = !isAutoScrolling
-    ? "Article scrolling paused. Move mouse away to resume."
-    : isReducedMotion
-      ? "Auto-scrolling disabled due to reduced motion preference."
-      : "Article auto-scrolling. Hover to control manually.";
+  // No hover/auto-scroll UX. Natural scrolling only.
 
   return (
     <main
-      className="relative w-full h-screen max-h-[70em] my-12 flex flex-col gap-20 items-center justify-center"
+      className="relative w-full min-h-screen my-12 flex flex-col gap-12 items-center"
       aria-label="About Ferrous"
       id="about-section"
     >
-      <span className="sr-only" aria-live="polite">
-        {autoScrollStatus}
-      </span>
-
-      <span className="text-base text-white/70" aria-hidden="true">
-        Simple. Secure. designed for you
-      </span>
-
-      {/* Upper section - animates in first */}
+      {/* Sticky header that animates in as section enters */}
       <motion.div
         ref={upperRef}
-        className="flex flex-col items-center justify-center md:gap-4 font-light"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{
-          opacity: upperInView ? 1 : 0,
-          y: upperInView ? 0 : 50
-        }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="sticky top-0 pt-48 pb-20 z-10 w-full flex flex-col items-center justify-center md:gap-4 font-light bg-black/30 backdrop-blur-sm md:backdrop-blur-md backdrop-saturate-150 border-white/10"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: upperInView ? 1 : 0, y: upperInView ? 0 : 30 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
         {isMobile ? (
           <>
@@ -333,62 +114,44 @@ export default function About() {
           </>
         ) : (
           <>
-            <TextParagraphAnimation as={"h2"} className="!font-light">
+            <TextParagraphAnimation as={"h3"} className="!font-light">
               Ferrous bridges emerging
             </TextParagraphAnimation>
-            <TextParagraphAnimation as={"h2"} className="!font-light">
+            <TextParagraphAnimation as={"h3"} className="!font-light">
               economies to the global money pool by connecting
             </TextParagraphAnimation>
-            <TextParagraphAnimation as={"h2"} className="!font-light">
+            <TextParagraphAnimation as={"h3"} className="!font-light">
               your local currency to a broad array of tokenized real world assets
             </TextParagraphAnimation>
           </>
         )}
       </motion.div>
 
-      {/* Article section - animates in after upper */}
+      {/* Body: fades in after header, scrolls naturally while header stays sticky */}
       <motion.article
         ref={articleRef}
-        className="relative w-full max-w-4xl xl:max-w-6xl h-96 flex items-center justify-center overflow-hidden py-6"
+        className="relative w-full max-w-4xl xl:max-w-6xl h-full overflow-hidden py-6"
         aria-label="About Ferrous details"
         role="region"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{
-          opacity: articleInView ? 1 : 0,
-          y: articleInView ? 0 : 50
-        }}
-        transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: articleInView ? 1 : 0, y: articleInView ? 0 : 20 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
       >
         <div
           ref={scrollRef}
-          className="prose prose-invert prose-base md:prose-2xl text-white/90 space-y-12 text-center relative w-full h-full overflow-y-auto focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg"
+          className="prose prose-invert prose-base md:prose-2xl text-white/90 space-y-12 text-center w-full h-full"
           style={{
-            scrollbarWidth: "none",
+            scrollbarWidth: "thin",
             msOverflowStyle: "none",
             WebkitOverflowScrolling: "touch",
           }}
           tabIndex={0}
           aria-label="About Ferrous article content"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
         >
-          <style jsx>{`
-            div::-webkit-scrollbar {
-              display: none;
-            }
-          `}</style>
-
           {paragraphs.map((line, idx) => (
-            <motion.p
-              key={idx}
-              className="!text-md lg:!text-lg leading-relaxed transition-all duration-300 text-center"
-              style={{
-                opacity: isReducedMotion ? 1 : getParagraphOpacity(idx),
-                transform: `translateY(${visibleParagraphs.includes(idx) ? 0 : 10}px)`,
-              }}
-            >
+            <p key={idx} className="!text-md lg:!text-xl leading-relaxed">
               {line}
-            </motion.p>
+            </p>
           ))}
         </div>
       </motion.article>

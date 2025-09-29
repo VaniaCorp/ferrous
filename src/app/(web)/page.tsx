@@ -1,6 +1,6 @@
 "use client";
-import Lottie from 'lottie-react';
 import React, { useEffect, useState, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import glowAnimation from "@/lottie/glow.json";
 import blackWorldAnimation from "@/lottie/black-world-lottie.json";
 import colouredWorldAnimation from "@/lottie/coloured-world-lottie.json";
@@ -11,17 +11,20 @@ import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import socials from '@/data/socials.json';
 import Navbar from '@/layout/navbar';
-import WaitlistDisplay from '@/ui/web/wailtist';
-import Features from '@/ui/web/features';
-import About from '@/ui/web/about';
-import Details from '@/ui/web/details';
+const WaitlistDisplay = dynamic(() => import('@/ui/web/wailtist'), { ssr: false, loading: () => null });
+const Features = dynamic(() => import('@/ui/web/features'), { ssr: false, loading: () => null });
+const About = dynamic(() => import('@/ui/web/about'), { ssr: false, loading: () => null });
+const Details = dynamic(() => import('@/ui/web/details'), { ssr: false, loading: () => null });
 import Image from 'next/image';
-import Partner from '@/ui/web/partner';
+const Partner = dynamic(() => import('@/ui/web/partner'), { ssr: false, loading: () => null });
 import InitialLoader from '@/layout/loader';
 import { gsap } from 'gsap';
 import useDeviceSize from '@/hooks/useDeviceSize';
 import MobileMenu from '@/layout/mobile-menu';
 import { FooterTrack } from '@/layout/mobile-footer';
+
+// Dynamically import lottie-react only on client and only when used
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 export default function Home() {
   const [hideSocials, setHideSocials] = useState<boolean>(false);
@@ -30,6 +33,14 @@ export default function Home() {
   const [isPageVisible, setIsPageVisible] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
   const { isMobile } = useDeviceSize();
+  const [allowMotion, setAllowMotion] = useState(true);
+  const [bgInView, setBgInView] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setAllowMotion(!media.matches);
+  }, []);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -132,15 +143,17 @@ export default function Home() {
             `}
         />
       ) : (
-        <Lottie
-          animationData={blackWorldAnimation}
-          alt="Rotating gray earth"
-          width={0}
-          height={0}
-          className={`w-full lg:h-full object-fill fixed top-[0%] lg:top-56 -left-[0%] inset-0 -z-10 transition-opacity ease-in-out duration-300 
-          ${isGameComplete ? "opacity-0" : "opacity-100"
-            }`}
-        />
+        allowMotion && (
+          <Lottie
+            animationData={blackWorldAnimation}
+            alt="Rotating gray earth"
+            width={0}
+            height={0}
+            className={`w-full lg:h-full object-fill fixed top-[0%] lg:top-56 -left-[0%] inset-0 -z-10 transition-opacity ease-in-out duration-300 
+            ${isGameComplete ? "opacity-0" : "opacity-100"
+              }`}
+          />
+        )
       )}
 
       {isMobile ? <FooterTrack /> : null}
@@ -159,24 +172,28 @@ export default function Home() {
             `}
         />
       ) : (
-        <Lottie
-          animationData={colouredWorldAnimation}
-          alt="Rotating colour earth"
-          width={0}
-          height={0}
-          className={`w-full h-full object-cover fixed top-[74%] lg:top-[20%] -left-[0%] inset-0 -z-10 transition-all ease-in-out duration-300 
-            ${isGameComplete ? "opacity-50" : "opacity-0"
-            }`}
-        />
+        allowMotion && (
+          <Lottie
+            animationData={colouredWorldAnimation}
+            alt="Rotating colour earth"
+            width={0}
+            height={0}
+            className={`w-full h-full object-cover fixed top-[74%] lg:top-[20%] -left-[0%] inset-0 -z-10 transition-all ease-in-out duration-300 
+              ${isGameComplete ? "opacity-50" : "opacity-0"
+              }`}
+          />
+        )
       )}
 
-      <Lottie
-        animationData={glowAnimation}
-        loop
-        width={0}
-        height={0}
-        className='fixed w-[60em] h-[60em] lg:w-max lg:h-max top-[50%] translate-y-[-50%] left-[-20%] xl:right-[-70%] inset-0 -z-10 pointer-events-none'
-      />
+      {allowMotion && (
+        <Lottie
+          animationData={glowAnimation}
+          loop
+          width={0}
+          height={0}
+          className='fixed w-[60em] h-[60em] lg:w-max lg:h-max top-[50%] translate-y-[-50%] left-[-20%] xl:right-[-70%] inset-0 -z-10 pointer-events-none'
+        />
+      )}
     </div>
   )
 }

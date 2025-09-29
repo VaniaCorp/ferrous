@@ -23,10 +23,6 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
   useGSAP(() => {
     if (!containerRef.current || !firstTextRef.current || !secondTextRef.current || !firstCursorRef.current || !secondCursorRef.current) return;
 
-    // Prevent scroll during loader animation
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-
     const firstSplit = new SplitText(firstTextRef.current, { type: "chars" });
     const secondSplit = new SplitText(secondTextRef.current, { type: "chars" });
 
@@ -34,16 +30,12 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
     gsap.set(secondTextRef.current, { opacity: 0 });
     gsap.set(firstCursorRef.current, { x: 0 });
     gsap.set(secondCursorRef.current, { x: 0 });
-    
-    // Ensure page starts at opacity 0
-    if (pageRef?.current) {
-      gsap.set(pageRef.current, { opacity: 0 });
-    }
+
 
     const durations = {
-      first: 4,
-      pause: 0.2,
-      second: 5.8
+      first: 1.2,
+      pause: 0.1,
+      second: 1.6
     };
 
     const charWidth = 18; // Approximate pixel width per character (adjust based on font)
@@ -84,10 +76,10 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
       width: 8,
       duration: 0.2
     })
-    .to({}, { duration: 0.8 }) // Longer pause for dramatic effect
+    .to({}, { duration: 0.3 })
     .to(loaderRef.current, {
       opacity: 0,
-      duration: 1.2,
+      duration: 0.4,
       ease: "power1.inOut",
       onComplete: () => {
         // Small delay before calling onComplete to ensure smooth transition
@@ -105,24 +97,9 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
       }
     });
 
-    // Add page fade-in to timeline only if pageRef exists - start earlier for subtle crossfade
-    if (pageRef?.current) {
-      tl.to(pageRef.current, {
-        opacity: 1,
-        duration: 1.6,
-        ease: "power1.inOut"
-      }, "-=0.8"); // Start 0.8 seconds before loader fade completes for smooth crossfade
-    }
-
   }, [onComplete, pageRef]);
 
-  // Cleanup effect to ensure scroll is restored if component unmounts
-  useEffect(() => {
-    return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    };
-  }, []);
+  // No global scroll locking or page opacity manipulation to avoid blocking LCP
 
   const texts = {
     first: "FERROUS",
