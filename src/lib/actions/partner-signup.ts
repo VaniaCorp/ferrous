@@ -33,8 +33,16 @@ export async function partnerSignupAction(
 
     const err = error as { data?: unknown; message?: string };
     if (err?.data) {
-      if (typeof err.data === "string") message = err.data;
-      else if (typeof (err.data as any)?.message === "string") message = (err.data as any).message;
+      if (typeof err.data === "string") {
+        message = err.data;
+      } else if (
+        typeof err.data === "object" &&
+        err.data !== null &&
+        "message" in err.data &&
+        typeof (err.data as { message: unknown }).message === "string"
+      ) {
+        message = (err.data as { message: string }).message;
+      }
     } else if (typeof err?.message === "string") {
       message = err.message;
     }
