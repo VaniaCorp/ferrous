@@ -1,5 +1,5 @@
 // form-display.tsx
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useActionState } from "react";
 import { motion } from "motion/react";
 import Lottie from "lottie-react";
 import rocketFlight from "@/lottie/rocket-flight-lottie.json";
@@ -7,6 +7,8 @@ import rocketFlightInitial from "@/lottie/rocket-hover-lottie.json";
 import { partnerQA } from "./_data";
 import FormInput from "@/components/form-input";
 import { Icon } from "@iconify/react";
+import { partnerSignupAction, PartnerSignupActionState } from "@/lib/actions/partner-signup";
+import { toast } from "sonner";
 
 type AnimationState = 'initial' | 'form' | 'submitting' | 'completed';
 
@@ -22,16 +24,37 @@ export default function FormDisplay({
   animationState
 }: FormDisplayProps) {
   const [formData, setFormData] = useState({
-    name: '',
+    fullname: '',
     email: '',
     company: '',
-    message: ''
+    notes: ''
   });
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
+  // server action state
+  const [state, formAction] = useActionState<PartnerSignupActionState, FormData>(
+    partnerSignupAction,
+    { success: true, message: undefined }
+  );
+  const [submitted, setSubmitted] = useState<boolean>(false);
+
+  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit();
-  }, [onSubmit]);
+    const fd = new FormData(e.currentTarget);
+    setSubmitted(true);
+    formAction(fd);
+  }, [formAction]);
+
+  useEffect(() => {
+    if (!submitted) return;
+    if (state.success === false) {
+      toast.error(state.message || "Could not submit. Please try again.");
+      return;
+    }
+    if (state.success === true) {
+      toast.success(state.message || "Thanks! We'll be in touch.");
+      onSubmit();
+    }
+  }, [submitted, state.success, state.message, onSubmit]);
 
   return (
     <div className="w-full max-w-7xl h-full mx-auto flex flex-col xl:flex-row items-center justify-center gap-8">
@@ -81,7 +104,7 @@ export default function FormDisplay({
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <form onSubmit={handleSubmit} className="color-container p-6 space-y-12">
+              <form action={(fd) => { setSubmitted(true); formAction(fd as unknown as FormData); }} onSubmit={handleSubmit} className="color-container p-6 space-y-12">
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -90,8 +113,10 @@ export default function FormDisplay({
                   <FormInput
                     type="text"
                     label="Name"
-                    value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    name="fullname"
+                    required
+                    value={formData.fullname}
+                    onChange={(e) => setFormData(prev => ({ ...prev, fullname: e.target.value }))}
                   />
                 </motion.div>
 
@@ -103,6 +128,8 @@ export default function FormDisplay({
                   <FormInput
                     type="text"
                     label="Company Name"
+                    name="company_name"
+                    required
                     value={formData.company}
                     onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
                   />
@@ -116,6 +143,8 @@ export default function FormDisplay({
                   <FormInput
                     type="email"
                     label="Email"
+                    name="email"
+                    required
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   />
@@ -129,8 +158,9 @@ export default function FormDisplay({
                   <FormInput
                     type="text"
                     label="Message"
-                    value={formData.message}
-                    onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+                    name="notes"
+                    value={formData.notes}
+                    onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
                   />
                 </motion.div>
 

@@ -48,15 +48,19 @@ export function TextUpAnimation({
 
     // If shouldAnimate is true, trigger the animation immediately
     if (shouldAnimate) {
-      gsap.to(split.chars, {
+      const tl = gsap.timeline();
+      tl.to(split.chars, {
         yPercent: 0,
         opacity: 1,
         duration: 0.8,
         stagger: 0,
         ease: "power3.out",
-        onComplete: () => {
+      });
+      // Add a small delay before reverting to ensure smooth completion
+      tl.call(() => {
+        gsap.delayedCall(0.2, () => {
           split.revert();
-        },
+        });
       });
     } else {
       // Fallback to scroll-based animation if shouldAnimate is not provided

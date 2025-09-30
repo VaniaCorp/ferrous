@@ -18,12 +18,9 @@ const Details = dynamic(() => import('@/ui/web/details'), { ssr: false, loading:
 import Image from 'next/image';
 const Partner = dynamic(() => import('@/ui/web/partner'), { ssr: false, loading: () => null });
 import InitialLoader from '@/layout/loader';
-import { gsap } from 'gsap';
 import useDeviceSize from '@/hooks/useDeviceSize';
 import MobileMenu from '@/layout/mobile-menu';
 import { FooterTrack } from '@/layout/mobile-footer';
-
-// Dynamically import lottie-react only on client and only when used
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 export default function Home() {
@@ -33,8 +30,7 @@ export default function Home() {
   const [isPageVisible, setIsPageVisible] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
   const { isMobile } = useDeviceSize();
-  const [allowMotion, setAllowMotion] = useState(true);
-  const [bgInView, setBgInView] = useState(false);
+  const [allowMotion, setAllowMotion] = useState(true); 
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
