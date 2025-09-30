@@ -3,6 +3,7 @@ import { Roboto_Mono } from "next/font/google";
 import { DM_Sans, DM_Mono } from "next/font/google";
 import LenisProvider from "@/providers/lenis-provider";
 import "./globals.css"; 
+import { Toaster } from "sonner";
 
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
@@ -37,6 +38,7 @@ export default function RootLayout({
           className={`${dmSans.variable} ${robotoMono.variable} ${dmMono.variable} antialiased`}
           suppressHydrationWarning={true}
         >
+          <Toaster richColors position="top-right" />
           {children}
         </body>
       </LenisProvider>

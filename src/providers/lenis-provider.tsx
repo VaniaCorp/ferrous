@@ -17,12 +17,22 @@ export default function LenisProvider({ children }: Readonly<{ children: ReactNo
     const lenisInstance = new Lenis();
     setLenis(lenisInstance);
     
-    lenisInstance.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-      lenisInstance.raf(time * 1000)
+    // Throttle ScrollTrigger updates to once per frame
+    let rafId: number | null = null;
+    lenisInstance.on('scroll', () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        ScrollTrigger.update();
+        rafId = null;
+      });
     });
 
-    gsap.ticker.lagSmoothing(0);
+    // Drive Lenis with native rAF to reduce coupling
+    const loop = (time: number) => {
+      lenisInstance.raf(time);
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
 
     return () => {
       lenisInstance.destroy();
@@ -35,7 +45,7 @@ export default function LenisProvider({ children }: Readonly<{ children: ReactNo
   }
 
   return (
-    <ReactLenis root options={{ lerp: 0.1, duration: 2, smoothWheel: true }}>
+    <ReactLenis root options={{ lerp: 0.1, duration: 1, smoothWheel: true }}>
       {children}
     </ReactLenis>
   )

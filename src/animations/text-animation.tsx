@@ -32,6 +32,10 @@ export function TextUpAnimation({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    if (typeof window !== 'undefined') {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return; // Skip animation for reduced motion users
+    }
     if (!containerRef.current) return;
 
     // Split into characters
@@ -44,15 +48,19 @@ export function TextUpAnimation({
 
     // If shouldAnimate is true, trigger the animation immediately
     if (shouldAnimate) {
-      gsap.to(split.chars, {
+      const tl = gsap.timeline();
+      tl.to(split.chars, {
         yPercent: 0,
         opacity: 1,
         duration: 0.8,
         stagger: 0,
         ease: "power3.out",
-        onComplete: () => {
+      });
+      // Add a small delay before reverting to ensure smooth completion
+      tl.call(() => {
+        gsap.delayedCall(0.2, () => {
           split.revert();
-        },
+        });
       });
     } else {
       // Fallback to scroll-based animation if shouldAnimate is not provided
@@ -103,6 +111,10 @@ export function TextStaggerUpAnimation({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    if (typeof window !== 'undefined') {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+    }
     if (!containerRef.current) return;
 
     // Split into characters
@@ -160,6 +172,10 @@ export function TextParagraphAnimation({
   const containerRef = useRef<HTMLParagraphElement>(null);
 
   useGSAP(() => {
+    if (typeof window !== 'undefined') {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+    }
     if (!containerRef.current) return;
 
     // Split into lines
@@ -320,6 +336,10 @@ export function TextWithImageAnimation({
   const imageRef = useRef<HTMLImageElement>(null);
 
   useGSAP(() => {
+    if (typeof window !== 'undefined') {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+    }
     if (!leftRef.current || !rightRef.current || !imageRef.current) return;
 
     // Split both text sections into words

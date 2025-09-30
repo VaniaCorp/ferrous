@@ -1,19 +1,24 @@
+"use client";
 import Image from "next/image";
 import { TextStaggerUpAnimation } from "@/animations/text-animation";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import socials from "@/data/socials.json";
 import { useLenis } from "lenis/react";
-import { useCallback, useEffect, useState } from "react";
+import { useActionState, useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import useDeviceSize from "@/hooks/useDeviceSize";
 import MobileFooter from "@/layout/mobile-footer";
+import { joinWaitlistAction } from "@/lib/actions/join-waitlist";
+import { toast } from "sonner";
 
 export default function WaitlistDisplay() {
   const lenis = useLenis();
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const { isMobile } = useDeviceSize();
+  const [state, formAction] = useActionState(joinWaitlistAction, { success: true as boolean, message: undefined as string | undefined });
+  const [submitted, setSubmitted] = useState(false);
 
   const navigation = [
     {
@@ -87,6 +92,15 @@ export default function WaitlistDisplay() {
     }
   }, [lenis]);
 
+  useEffect(() => {
+    if (!submitted) return;
+    if (state.success === false) {
+      toast.error(state.message || "Please try to register again");
+    } else if (state.success === true) {
+      toast.success(state.message || "You're on the waitlist");
+    }
+  }, [submitted, state.success, state.message]);
+
   return (
     <div
       id="waitlist"
@@ -115,23 +129,29 @@ export default function WaitlistDisplay() {
           className={`${isMobile ? "w-full" : "h-full w-full object-cover"}`}
         />
 
-        <span className={`absolute bottom-12 left-[50%] translate-x-[-50%] w-full max-w-xl p-2 bg-white rounded-2xl flex items-center gap-2 overflow-hidden ${isMobile ? "bottom-4" : "bottom-12"}`}>
+        <form
+          action={formAction}
+          onSubmit={() => setSubmitted(true)}
+          className={`absolute bottom-12 left-[50%] translate-x-[-50%] w-full max-w-xl p-2 bg-white rounded-2xl flex items-center gap-2 overflow-hidden ${isMobile ? "bottom-4" : "bottom-12"}`}
+        >
           <input
             type="email"
             name="email"
             id="waitlist-email"
+            required
             placeholder="Enter your email"
             className="absolute top-0 left-0 w-full h-full p-2 md:p-4 text-base text-black rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 no-smooth-scroll"
             aria-label="Email address for waitlist"
           />
           <button
             type="submit"
+            disabled={false}
             className="relative z-10 bg-black rounded-lg flex items-center justify-center ml-auto w-12 h-12 transition-all duration-200 hover:scale-105 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
             aria-label="Submit email to join waitlist"
           >
             <Icon icon="codex:check" width={24} height={24} color="white" />
           </button>
-        </span>
+        </form>
       </div>
 
       {isMobile ?
@@ -218,8 +238,8 @@ export default function WaitlistDisplay() {
                         onClick={scrollToTop}
                         disabled={isScrolling}
                         className={`relative w-max border backdrop-blur-sm rounded-3xl p-3 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 overflow-hidden ${isScrolling
-                            ? 'border-orange-400 bg-orange-400/20 cursor-wait'
-                            : 'border-white hover:scale-110 hover:border-white/40 hover:bg-white/10 cursor-pointer'
+                          ? 'border-orange-400 bg-orange-400/20 cursor-wait'
+                          : 'border-white hover:scale-110 hover:border-white/40 hover:bg-white/10 cursor-pointer'
                           }`}
                         aria-label={isScrolling ? "Scrolling to top..." : "Scroll to top of page"}
                         whileHover={!isScrolling ? { scale: 1.05 } : {}}
