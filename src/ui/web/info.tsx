@@ -18,14 +18,9 @@ export default function Info() {
 
       <article className="w-full max-w-lg h-max max-h-96 overflow-y-auto flex flex-col gap-8">
         <p>
-          <strong>Ferrous</strong> connects the emerging market to the global blockchain
-          economy. We offer financial empowerment by bridging your local currency directly to world-class assets.
-        </p>
-
-        <p>
-          We eliminate the practical barriers and technical friction that previously made
-          high-yield opportunities inaccessible, giving you direct access to a curated
-          selection of yields and tokenized real-world assets. Deposit local, invest global: Discover your financial liberation.
+          <strong>Ferrous</strong> connects local currency from emerging markets to world class financial instruments built on the global blockchain 
+          economy by eliminating the practical barriers and technical friction that previously made the opportunities inaccessible.
+          Ferrous integrates key providers to offer you access to a selection of assets that were only available to institutions and seasoned investors.
         </p>
       </article>
     </div>

@@ -6,17 +6,19 @@ import blackWorldAnimation from "@/lottie/black-world-lottie.json";
 import colouredWorldAnimation from "@/lottie/coloured-world-lottie.json";
 import HeroText from '@/ui/web/hero-text';
 import Info from '@/ui/web/info';
-// import MiniGame from '@/ui/web/mini-game';
+const MiniGame = dynamic(() => import('@/ui/web/mini-game'), { ssr: false, loading: () => (
+  <div className="relative w-full max-w-7xl h-screen max-h-[75em] mx-auto" aria-hidden />
+) });
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import socials from '@/data/socials.json';
 import Navbar from '@/layout/navbar';
-const WaitlistDisplay = dynamic(() => import('@/ui/web/wailtist'), { ssr: false, loading: () => null });
-const Features = dynamic(() => import('@/ui/web/features'), { ssr: false, loading: () => null });
-const About = dynamic(() => import('@/ui/web/about'), { ssr: false, loading: () => null });
-const Details = dynamic(() => import('@/ui/web/details'), { ssr: false, loading: () => null });
+const WaitlistDisplay = dynamic(() => import('@/ui/web/wailtist'), { ssr: false, loading: () => <div className="w-full min-h-[40rem]" aria-hidden /> });
+const Features = dynamic(() => import('@/ui/web/features'), { ssr: false, loading: () => <section className="w-full min-h-[48rem]" aria-hidden /> });
+const About = dynamic(() => import('@/ui/web/about'), { ssr: false, loading: () => <section className="w-full min-h-[56rem]" aria-hidden /> });
+const Details = dynamic(() => import('@/ui/web/details'), { ssr: false, loading: () => <section className="w-full min-h-[40rem]" aria-hidden /> });
 import Image from 'next/image';
-const Partner = dynamic(() => import('@/ui/web/partner'), { ssr: false, loading: () => null });
+const Partner = dynamic(() => import('@/ui/web/partner'), { ssr: false, loading: () => <section className="w-full min-h-[36rem]" aria-hidden /> });
 import InitialLoader from '@/layout/loader';
 import useDeviceSize from '@/hooks/useDeviceSize';
 import MobileMenu from '@/layout/mobile-menu';
@@ -90,7 +92,7 @@ export default function Home() {
 
       <Info />
 
-      {/* <MiniGame onGameComplete={setIsGameComplete} /> */}
+      <MiniGame onGameComplete={setIsGameComplete} />
 
       <Features />
 
@@ -129,25 +131,26 @@ export default function Home() {
 
 
       {isMobile ? (
-        <Image
-          src="/images/mobile-black-world.gif"
-          alt='Black World'
-          width={0}
-          height={0}
-          className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300
-            ${isGameComplete ? "opacity-0" : "opacity-40"}
-            `}
-        />
+        !isGameComplete && (
+          <Image
+            src="/images/mobile-black-world.gif"
+            alt='Black World'
+            width={0}
+            height={0}
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-40`}
+          />
+        )
       ) : (
-        allowMotion && (
+        allowMotion && !isGameComplete && (
           <Lottie
             animationData={blackWorldAnimation}
             alt="Rotating gray earth"
             width={0}
             height={0}
-            className={`w-full lg:h-full object-fill fixed top-[0%] lg:top-56 -left-[0%] inset-0 -z-10 transition-opacity ease-in-out duration-300 
-            ${isGameComplete ? "opacity-0" : "opacity-100"
-              }`}
+            className={`w-full lg:h-full object-fill fixed top-[0%] lg:top-56 -left-[0%] inset-0 -z-10 transition-opacity ease-in-out duration-300`}
           />
         )
       )}
@@ -158,25 +161,26 @@ export default function Home() {
 
 
       {isMobile ? (
-        <Image
-          src="/images/mobile-color-world.gif"
-          alt='Colour World'
-          width={0}
-          height={0}
-          className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300
-            ${isGameComplete ? "opacity-50" : "opacity-0"}
-            `}
-        />
+        isGameComplete && (
+          <Image
+            src="/images/mobile-color-world.gif"
+            alt='Colour World'
+            width={0}
+            height={0}
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-50`}
+          />
+        )
       ) : (
-        allowMotion && (
+        allowMotion && isGameComplete && (
           <Lottie
             animationData={colouredWorldAnimation}
             alt="Rotating colour earth"
             width={0}
             height={0}
-            className={`w-full h-full object-cover fixed top-[74%] lg:top-[20%] -left-[0%] inset-0 -z-10 transition-all ease-in-out duration-300 
-              ${isGameComplete ? "opacity-50" : "opacity-0"
-              }`}
+            className={`w-full h-full object-cover fixed top-[74%] lg:top-[20%] -left-[0%] inset-0 -z-10 transition-all ease-in-out duration-300`}
           />
         )
       )}

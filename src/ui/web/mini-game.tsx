@@ -1,9 +1,9 @@
 "use client";
 
 import { Icon } from "@iconify/react";
-import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import { useState, useRef, useEffect } from "react";
+import { useGSAP } from "@gsap/react";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 
 interface MiniGameProps {
   onGameComplete?: (isComplete: boolean) => void;
@@ -19,7 +19,7 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
   const spanRef = useRef<HTMLDivElement>(null);
   const paragraphRef = useRef<HTMLParagraphElement>(null);
 
-  const textFragments = [
+  const textFragments = useMemo(() => ([
     { id: "FER", x: "10%", y: "20%", rotation: -15, isTarget: true },
     { id: "R", x: "85%", y: "15%", rotation: -15, isTarget: true },
     { id: "OUS", x: "80%", y: "75%", rotation: -15, isTarget: true },
@@ -42,16 +42,16 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
     { id: "BEE", x: "55%", y: "70%", rotation: 14, isTarget: false },
     { id: "FOX", x: "35%", y: "80%", rotation: -16, isTarget: false },
     { id: "JAM", x: "60%", y: "85%", rotation: 8, isTarget: false }
-  ];
+  ]), []);
 
-  const targetFragments = textFragments.filter(f => f.isTarget);
+  const targetFragments = useMemo(() => textFragments.filter(f => f.isTarget), [textFragments]);
 
   // Main title fragments with their corresponding text fragments
-  const mainTitleFragments = [
+  const mainTitleFragments = useMemo(() => ([
     { id: "FER", text: "FER" },
     { id: "R", text: "R" },
     { id: "OUS", text: "OUS" }
-  ];
+  ]), []);
 
   // Update revealed title parts when clickedLetters changes
   useEffect(() => {
@@ -90,15 +90,12 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
   };
 
   useGSAP(() => {
-    // Set all text fragments to low opacity
     gsap.set(textRefs.current, { opacity: 0.3 });
-
-    // Set initial content states
     gsap.set(spanRef.current, { opacity: 1, y: 0 });
     gsap.set(paragraphRef.current, { opacity: 0, y: 20 });
   }, { scope: sectionRef });
 
-  const handleTextClick = (textId: string, index: number) => {
+  const handleTextClick = useCallback((textId: string, index: number) => {
     const fragment = textFragments[index];
     if (!fragment.isTarget || clickedLetters.includes(textId)) return;
 
@@ -156,7 +153,7 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
         }, 900);
       }, 800);
     }
-  };
+  }, [clickedLetters, onGameComplete, targetFragments, textFragments]);
 
   return (
     <div id="spell" className="relative w-full max-w-7xl h-screen max-h-[75em] mx-auto flex flex-col justify-center items-center gap-12 z-0">
