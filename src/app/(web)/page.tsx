@@ -6,7 +6,7 @@ import blackWorldAnimation from "@/lottie/black-world-lottie.json";
 import colouredWorldAnimation from "@/lottie/coloured-world-lottie.json";
 import HeroText from '@/ui/web/hero-text';
 import Info from '@/ui/web/info';
-import MiniGame from '@/ui/web/mini-game';
+// import MiniGame from '@/ui/web/mini-game';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import socials from '@/data/socials.json';
@@ -90,7 +90,7 @@ export default function Home() {
 
       <Info />
 
-      <MiniGame onGameComplete={setIsGameComplete} />
+      {/* <MiniGame onGameComplete={setIsGameComplete} /> */}
 
       <Features />
 
