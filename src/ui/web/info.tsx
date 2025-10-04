@@ -3,7 +3,7 @@ import { TextUpAnimation } from "@/animations/text-animation";
 
 export default function Info() {
   return (
-    <div id="info" className="w-full max-w-7xl h-screen max-h-[50em] lg:px-16 mx-auto flex flex-col gap-12">
+    <div id="info" className="w-full max-w-7xl h-screen max-h-[50em] px-4 lg:px-16 mx-auto flex flex-col gap-12">
       <div className="leading-none max-md:space-y-1">
         <TextUpAnimation as="h1" className="!font-mono uppercase">
           Your <span className="yellow-underline">gateway </span><br />

@@ -89,48 +89,28 @@ export default function About() {
       {/* Sticky header that animates in as section enters */}
       <motion.div
         ref={upperRef}
-        className="sticky top-0 pt-48 pb-20 z-10 w-full flex flex-col items-center justify-center md:gap-4 font-light bg-black/30 backdrop-blur-sm md:backdrop-blur-md backdrop-saturate-150 border-white/10"
+        className="sticky top-0 pt-20 lg:pt-48 pb-20 z-10 w-full flex flex-col items-center justify-center md:gap-4 font-light bg-black/30 backdrop-blur-sm md:backdrop-blur-md backdrop-saturate-150 border-white/10"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: upperInView ? 1 : 0, y: upperInView ? 0 : 30 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        {isMobile ? (
-          <>
-            <TextParagraphAnimation as={"h3"} className="!font-light">
-              Ferrous bridges emerging
+        <div className="w-full max-w-4xl px-4 md:px-8 text-center">
+          {isMobile ? (
+            <TextParagraphAnimation as={"h2"} className="!font-light text-lg md:text-xl lg:text-2xl leading-relaxed">
+              Ferrous bridges emerging economies to the global money pool by connecting your local currency to a broad array of tokenized real world assets
             </TextParagraphAnimation>
-            <TextParagraphAnimation as={"h3"} className="!font-light">
-              economies to the global
+          ) : (
+            <TextParagraphAnimation as={"h2"} className="!font-light text-xl md:text-2xl lg:text-3xl leading-relaxed">
+              Ferrous bridges emerging economies to the global money pool by connecting your local currency to a broad array of tokenized real world assets
             </TextParagraphAnimation>
-            <TextParagraphAnimation as={"h3"} className="!font-light">
-              money pool by connecting
-            </TextParagraphAnimation>
-            <TextParagraphAnimation as={"h3"} className="!font-light">
-              your local currency to a broad
-            </TextParagraphAnimation>
-            <TextParagraphAnimation as={"h3"} className="!font-light">
-              array of tokenized real world assets
-            </TextParagraphAnimation>
-          </>
-        ) : (
-          <>
-            <TextParagraphAnimation as={"h3"} className="!font-light">
-              Ferrous bridges emerging
-            </TextParagraphAnimation>
-            <TextParagraphAnimation as={"h3"} className="!font-light">
-              economies to the global money pool by connecting
-            </TextParagraphAnimation>
-            <TextParagraphAnimation as={"h3"} className="!font-light">
-              your local currency to a broad array of tokenized real world assets
-            </TextParagraphAnimation>
-          </>
-        )}
+          )}
+        </div>
       </motion.div>
 
       {/* Body: fades in after header, scrolls naturally while header stays sticky */}
       <motion.article
         ref={articleRef}
-        className="relative w-full max-w-4xl xl:max-w-6xl h-full overflow-hidden py-6"
+        className="relative w-full max-w-4xl xl:max-w-6xl h-full overflow-hidden py-6 px-4 md:px-0"
         aria-label="About Ferrous details"
         role="region"
         initial={{ opacity: 0, y: 20 }}

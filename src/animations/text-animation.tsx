@@ -178,10 +178,14 @@ export function TextParagraphAnimation({
     }
     if (!containerRef.current) return;
 
-    // Split into lines
+    // Check if mobile device
+    const isMobile = window.innerWidth < 768;
+
+    // Split into lines with better word handling
     const split = new SplitText(containerRef.current, {
       type: "lines",
       linesClass: "line-overflow",
+      reduceWhiteSpace: false,
     });
 
     // Hide initially
@@ -196,7 +200,7 @@ export function TextParagraphAnimation({
       stagger: 0.1,
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top 85%",
+        start: isMobile ? "top 70%" : "top 85%", // Earlier trigger on mobile
         toggleActions: "play none none reverse",
       },
       onComplete: () => {
@@ -210,13 +214,18 @@ export function TextParagraphAnimation({
   }, []);
 
   return (
-    <div className="relative w-max h-max overflow-hidden">
+    <div className="relative w-full overflow-hidden">
       <Tag
         ref={containerRef}
-        className={`${className}`}
+        className={`${className} break-words hyphens-auto`}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
         role={role}
+        style={{
+          wordBreak: "break-word",
+          overflowWrap: "break-word",
+          hyphens: "auto",
+        }}
       >
         {children}
       </Tag>

@@ -29,16 +29,24 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
 
     const elements = [textRef1.current, textRef2.current, textRef3.current, textRef4.current];
     const cursors = [cursorRef1.current, cursorRef2.current, cursorRef3.current, cursorRef4.current];
-    const splits = elements.map((el) => new SplitText(el, { type: "chars" }));
+    
+    // Split first 3 texts by characters, last text by words AND chars for proper wrapping
+    const splits = [
+      new SplitText(textRef1.current, { type: "chars" }),
+      new SplitText(textRef2.current, { type: "chars" }),
+      new SplitText(textRef3.current, { type: "chars" }),
+      new SplitText(textRef4.current, { type: "words,chars" })
+    ];
 
     // Start hidden
     gsap.set(elements, { opacity: 0 });
-    gsap.set(splits.map(s => s.chars).flat(), { opacity: 0 });
+    gsap.set(splits.slice(0, 3).map(s => s.chars).flat(), { opacity: 0 });
+    gsap.set(splits[3].chars, { opacity: 0 });
     gsap.set(cursors, { x: 0, opacity: 1, width: 2 });
 
-    const charWidth = 18; // Approximate pixel width per character (adjust based on font)
+    const charWidth = 18; // Approximate pixel width per character
 
-    const perLineDurations = [1.4, 1.4, 1.2, 2.0];
+    const perLineDurations = [3.0, 3.0, 2.5, 4.0];
 
     const tl = gsap.timeline({
       onComplete: () => {
@@ -52,6 +60,7 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
       const cursor = cursors[idx];
       const isLast = idx === elements.length - 1;
       const typeDuration = perLineDurations[idx];
+      // const isLastText = idx === 3;
 
       tl.to(el, { opacity: 1, duration: 0 })
         .to(split.chars, {
@@ -66,7 +75,9 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
         })
         .to(cursor, { x: "+=4", width: 8, duration: 0.25 })
         .to({}, { duration: 0.35 })
-        .to(cursor, { opacity: isLast ? 1 : 0, duration: 0 });
+        .to(cursor, { opacity: isLast ? 1 : 0, duration: 0 })
+        // Hide the current text before showing the next one (except for the last text)
+        .to(el, { opacity: isLast ? 1 : 0, duration: 0 });
     });
 
     tl.to(loaderRef.current, {
@@ -113,7 +124,7 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
             {texts.line3}
             <span ref={cursorRef3} className="cursor absolute animate-blink">|</span>
           </div>
-          <div ref={textRef4} className="relative inline-block mt-1 md:mt-2 text-3xl md:text-4xl lg:text-5xl font-black">
+          <div ref={textRef4} className="relative mt-1 md:mt-2 text-3xl md:text-4xl lg:text-5xl font-black max-w-xs md:max-w-none text-center whitespace-normal">
             {texts.line4}
             <span ref={cursorRef4} className="cursor absolute animate-blink">|</span>
           </div>

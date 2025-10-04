@@ -43,25 +43,39 @@ export default function Home() {
   useEffect(() => {
     if (typeof document === "undefined") return;
 
-    const waitlistEl = document.getElementById("waitlist");
-    if (!waitlistEl) return;
+    let timeoutId: NodeJS.Timeout;
+    let observer: IntersectionObserver | null = null;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setHideSocials(entry.isIntersecting);
-        });
-      },
-      {
-        root: null,
-        threshold: 0.01,
-        rootMargin: "0px 0px -10% 0px",
+    const setupObserver = () => {
+      const waitlistEl = document.getElementById("waitlist");
+      if (!waitlistEl) {
+        // Retry after a short delay if element not found (handles dynamic loading)
+        timeoutId = setTimeout(setupObserver, 100);
+        return;
       }
-    );
 
-    observer.observe(waitlistEl);
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            setHideSocials(entry.isIntersecting);
+          });
+        },
+        {
+          root: null,
+          threshold: 0.01,
+          rootMargin: "0px 0px -10% 0px",
+        }
+      );
 
-    return () => observer.disconnect();
+      observer.observe(waitlistEl);
+    };
+
+    setupObserver();
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      if (observer) observer.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -84,7 +98,7 @@ export default function Home() {
   return (
     <div
       ref={pageRef}
-      className="relative w-full"
+      className="relative w-full h-full"
     >
       {isMobile ? <MobileMenu /> : <Navbar />}
 
@@ -139,7 +153,7 @@ export default function Home() {
             height={0}
             priority
             fetchPriority="high"
-            sizes="100vw"
+            // sizes="100vw"
             className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-40`}
           />
         )
@@ -155,9 +169,9 @@ export default function Home() {
         )
       )}
 
-      {isMobile ? <FooterTrack /> : null}
-
       <WaitlistDisplay />
+
+      {isMobile ? <FooterTrack /> : null}
 
 
       {isMobile ? (
@@ -169,7 +183,7 @@ export default function Home() {
             height={0}
             priority
             fetchPriority="high"
-            sizes="100vw"
+            // sizes="100vw"
             className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-50`}
           />
         )
