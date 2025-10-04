@@ -270,7 +270,7 @@ export default function AnimatedCard({
       {!isExpanded ? (
         <motion.div
           key="card-collapsed"
-          className={`relative flex flex-col glass rounded-[49px] md:rounded-xl backdrop-blur-xl lg:backdrop-blur-none shadow-lg text-white transition-all duration-300 cursor-pointer overflow-hidden
+          className={`relative flex flex-col glass rounded-[49px] md:rounded-xl backdrop-blur-xs lg:backdrop-blur-none shadow-lg text-white transition-all duration-300 cursor-pointer overflow-hidden
             ${isTablet ? "w-[22em] basis-[22em] min-h-[600px]" : "w-[370px] min-h-[600px]"}
             `}
           onClick={onToggle}

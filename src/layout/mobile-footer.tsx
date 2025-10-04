@@ -28,26 +28,40 @@ export function FooterTrack() {
   useEffect(() => {
     if (typeof document === "undefined") return;
 
-    const waitlistEl = document.getElementById("waitlist");
-    if (!waitlistEl) return;
+    let timeoutId: NodeJS.Timeout;
+    let observer: IntersectionObserver | null = null;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          // Hide footer track when waitlist is intersecting
-          setIsVisible(!entry.isIntersecting);
-        });
-      },
-      {
-        root: null,
-        threshold: 0.1, // Trigger when 10% of waitlist is visible
-        rootMargin: "0px 0px -20% 0px", // Hide slightly before fully visible
+    const setupObserver = () => {
+      const waitlistEl = document.getElementById("waitlist");
+      if (!waitlistEl) {
+        // Retry after a short delay if element not found (handles dynamic loading)
+        timeoutId = setTimeout(setupObserver, 100);
+        return;
       }
-    );
 
-    observer.observe(waitlistEl);
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            // Hide footer track when waitlist is intersecting
+            setIsVisible(!entry.isIntersecting);
+          });
+        },
+        {
+          root: null,
+          threshold: 0.1, // Trigger when 10% of waitlist is visible
+          rootMargin: "0px 0px -20% 0px", // Hide slightly before fully visible
+        }
+      );
 
-    return () => observer.disconnect();
+      observer.observe(waitlistEl);
+    };
+
+    setupObserver();
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      if (observer) observer.disconnect();
+    };
   }, []);
 
   // Smooth scroll to waitlist section
@@ -69,7 +83,7 @@ export function FooterTrack() {
   if (!isVisible) return null;
 
   return (
-    <div className="glass !border-none fixed bottom-0 left-0 w-full h-max backdrop-blur-lg rounded-3xl px-2 py-5 flex items-center justify-between transition-all duration-500 z-50">
+    <div className="glass !border-none fixed bottom-2  left-1/2 -translate-x-1/2 w-full max-w-md h-max backdrop-blur-lg rounded-3xl px-2 py-5 flex items-center justify-between transition-all duration-500 z-50">
       <Link 
         href="#waitlist"
         onClick={handleWaitlistClick}

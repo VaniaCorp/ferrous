@@ -104,7 +104,7 @@ export default function WaitlistDisplay() {
   return (
     <div
       id="waitlist"
-      className="relative w-full h-[30em] lg:h-screen lg:max-h-[75em] mx-auto flex flex-col"
+      className="relative w-full h-full lg:h-screen lg:max-h-[75em] mx-auto flex flex-col"
     >
       <section className="absolute top-[13%] left-[50%] translate-x-[-50%] w-max h-max mx-auto flex flex-col gap-4">
         <span className="text-2xl">Join Our</span>
@@ -126,13 +126,15 @@ export default function WaitlistDisplay() {
           alt="Waitlist"
           width={isMobile ? 0 : 0}
           height={0}
+          fetchPriority="high"
+          loading="eager"
           className={`${isMobile ? "w-full" : "h-full w-full object-cover"}`}
         />
 
         <form
           action={formAction}
           onSubmit={() => setSubmitted(true)}
-          className={`absolute bottom-12 left-[50%] translate-x-[-50%] w-full max-w-xl p-2 bg-white rounded-2xl flex items-center gap-2 overflow-hidden ${isMobile ? "bottom-4" : "bottom-12"}`}
+          className={`absolute bottom-12 left-[50%] translate-x-[-50%] w-full max-w-sm lg:max-w-xl p-2 bg-white rounded-2xl flex items-center gap-2 overflow-hidden ${isMobile ? "bottom-4" : "bottom-12"}`}
         >
           <input
             type="email"
