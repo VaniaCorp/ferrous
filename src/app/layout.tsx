@@ -24,6 +24,7 @@ const dmMono = DM_Mono({
 export const metadata: Metadata = {
   title: "Ferrous",
   description: "Ferrous bridges blocked economies to the global money pool turning local currency into smart investments using AI and DeFi",
+  viewport: "width=device-width, initial-scale=1.0",
 };
 
 export default function RootLayout({
@@ -35,6 +36,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="preload" href="/fonts/Maesiez.otf" as="font" type="font/otf" crossOrigin="anonymous" />
+        <link rel="preload" href="/videos/intro-vid.mp4" as="video" type="video/mp4" />
       </head>
       <LenisProvider>
         <body

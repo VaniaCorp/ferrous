@@ -23,6 +23,7 @@ import InitialLoader from '@/layout/loader';
 import useDeviceSize from '@/hooks/useDeviceSize';
 import MobileMenu from '@/layout/mobile-menu';
 import { FooterTrack } from '@/layout/mobile-footer';
+import { AnimatePresence } from 'motion/react';
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 export default function Home() {
@@ -98,12 +99,12 @@ export default function Home() {
   return (
     <div
       ref={pageRef}
-      className="relative w-full h-full"
+      className="relative w-full h-full max-md:overflow-x-hidden"
     >
       {isMobile ? <MobileMenu /> : <Navbar />}
 
       <HeroText isVisible={isPageVisible} />
-
+''
       <Info />
 
       <MiniGame onGameComplete={setIsGameComplete} />
@@ -143,7 +144,6 @@ export default function Home() {
         ))}
       </nav>
 
-
       {isMobile ? (
         !isGameComplete && (
           <Image
@@ -154,7 +154,7 @@ export default function Home() {
             priority
             fetchPriority="high"
             // sizes="100vw"
-            className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-40`}
+            className={`fixed bottom-0 left-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-40`}
           />
         )
       ) : (
@@ -184,7 +184,7 @@ export default function Home() {
             priority
             fetchPriority="high"
             // sizes="100vw"
-            className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-50`}
+            className={`fixed bottom-0 left-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-50`}
           />
         )
       ) : (
@@ -205,7 +205,7 @@ export default function Home() {
           loop
           width={0}
           height={0}
-          className='fixed w-[60em] h-[60em] lg:w-max lg:h-max top-[50%] translate-y-[-50%] left-[-20%] xl:right-[-70%] inset-0 -z-10 pointer-events-none'
+          className='fixed w-[60em] h-[60em] max-md:hidden lg:w-max lg:h-max top-[50%] translate-y-[-50%] left-[-20%] xl:right-[-70%] inset-0 -z-10 pointer-events-none'
         />
       )}
     </div>

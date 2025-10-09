@@ -24,14 +24,13 @@ export default function AnimatedCard({
   // Truncate content for collapsed state
   const truncatedContent =
     description.length > 360 ? description.slice(0, 360) + "..." : description;
-    const isMobile = useDeviceSize();
 
   // For scrolling and fade-in effect
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | 'none'>('none');
   const [visibleParagraphs, setVisibleParagraphs] = useState<number[]>([]);
   const scrollAnimationRef = useRef<number | null>(null);
-  const isTablet = useDeviceSize();
+  const {isMobile, isTablet} = useDeviceSize();
 
   // For auto scroll
   const autoScrollRef = useRef<number | null>(null);
@@ -270,8 +269,8 @@ export default function AnimatedCard({
       {!isExpanded ? (
         <motion.div
           key="card-collapsed"
-          className={`relative flex flex-col glass rounded-[49px] md:rounded-xl backdrop-blur-xs lg:backdrop-blur-none shadow-lg text-white transition-all duration-300 cursor-pointer overflow-hidden
-            ${isTablet ? "w-[22em] basis-[22em] min-h-[600px]" : "w-[370px] min-h-[600px]"}
+          className={`relative flex flex-wrap glass rounded-[49px] md:rounded-xl backdrop-blur-lg lg:backdrop-blur-none shadow-lg text-white transition-all duration-300 cursor-pointer overflow-hidden
+            ${isMobile ? "w-[20em] basis-[20em] min-h-[480px]" : isTablet ? "w-[22em] basis-[22em] min-h-[600px]" : "w-[370px] min-h-[600px]"}
             `}
           onClick={onToggle}
           style={{
@@ -283,7 +282,7 @@ export default function AnimatedCard({
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           layout
         >
-          <motion.div className="absolute top-0 left-0 w-full h-full bg-olive-transparent/60 md:bg-olive-transparent px-8 py-12 flex items-center justify-center">
+          <motion.div className="absolute top-0 left-0 w-full h-full bg-olive-transparent md:bg-olive-transparent px-8 py-12 flex items-center justify-center">
             <motion.div
               layout
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
@@ -298,7 +297,7 @@ export default function AnimatedCard({
                   layout
                   layoutId={`card-image-${title}`}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  className="relative w-[120px] h-[120px] flex items-center justify-center"
+                  className="relative w-[80px] md:w-[120px] h-[80px] md:h-[120px] flex items-center justify-center"
                 >
                   <Image
                     src={imageSrc}
@@ -325,7 +324,7 @@ export default function AnimatedCard({
                 <motion.article
                   layout
                   transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                  className="text-base font-normal leading-relaxed tracking-wide opacity-90 space-y-4"
+                  className="text-xs md:text-base font-normal leading-relaxed tracking-wide opacity-90 space-y-4"
                 >
                   {truncatedContent}
                 </motion.article>
