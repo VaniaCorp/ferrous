@@ -5,7 +5,7 @@ import {
   getOptimalVideoSource, 
   getOptimalVideoAttributes,
   estimateLoadTime,
-  defaultVideoConfig
+  NavigatorWithConnection
 } from '@/lib/video-utils';
 
 interface VideoOptimizationOptions {
@@ -13,16 +13,25 @@ interface VideoOptimizationOptions {
   skipOnReducedMotion?: boolean;
   mobileOptimized?: boolean;
   timeoutMs?: number;
-  enableAdaptiveLoading?: boolean;
 }
 
-export function useVideoOptimization(options: VideoOptimizationOptions = {}) {
+interface VideoOptimizationReturn {
+  shouldSkipVideo: boolean;
+  isMobile: boolean;
+  connectionType: string;
+  getVideoSource: (baseSrc: string) => string;
+  getVideoAttributes: () => Partial<HTMLVideoElement> & { controlsList?: string };
+  timeoutMs: number;
+  isSlowConnection: boolean;
+  prefersReducedMotion: boolean;
+}
+
+export function useVideoOptimization(options: VideoOptimizationOptions = {}): VideoOptimizationReturn {
   const {
     skipOnSlowConnection = true,
     skipOnReducedMotion = true,
     mobileOptimized = true,
-    timeoutMs = 3000,
-    enableAdaptiveLoading = true
+    timeoutMs = 3000
   } = options;
 
   const [shouldSkipVideo, setShouldSkipVideo] = useState(false);
@@ -41,8 +50,8 @@ export function useVideoOptimization(options: VideoOptimizationOptions = {}) {
     // Detect connection type and estimate load time
     const checkConnection = () => {
       if ('connection' in navigator) {
-        const connection = (navigator as any).connection;
-        const effectiveType = connection.effectiveType || 'unknown';
+        const connection = (navigator as NavigatorWithConnection).connection;
+        const effectiveType = connection?.effectiveType ?? 'unknown';
         setConnectionType(effectiveType);
         
         // Estimate load time for a typical intro video (1.3MB)
@@ -73,8 +82,8 @@ export function useVideoOptimization(options: VideoOptimizationOptions = {}) {
     window.addEventListener('resize', checkMobile);
     
     if ('connection' in navigator) {
-      const connection = (navigator as any).connection;
-      connection.addEventListener('change', checkConnection);
+      const connection = (navigator as NavigatorWithConnection).connection;
+      connection?.addEventListener?.('change', checkConnection);
     }
 
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -83,8 +92,8 @@ export function useVideoOptimization(options: VideoOptimizationOptions = {}) {
     return () => {
       window.removeEventListener('resize', checkMobile);
       if ('connection' in navigator) {
-        const connection = (navigator as any).connection;
-        connection.removeEventListener('change', checkConnection);
+        const connection = (navigator as NavigatorWithConnection).connection;
+        connection?.removeEventListener?.('change', checkConnection);
       }
       mediaQuery.removeEventListener('change', checkReducedMotion);
     };

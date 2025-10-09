@@ -6,9 +6,11 @@ import blackWorldAnimation from "@/lottie/black-world-lottie.json";
 import colouredWorldAnimation from "@/lottie/coloured-world-lottie.json";
 import HeroText from '@/ui/web/hero-text';
 import Info from '@/ui/web/info';
-const MiniGame = dynamic(() => import('@/ui/web/mini-game'), { ssr: false, loading: () => (
-  <div className="relative w-full max-w-7xl h-screen max-h-[75em] mx-auto" aria-hidden />
-) });
+const MiniGame = dynamic(() => import('@/ui/web/mini-game'), {
+  ssr: false, loading: () => (
+    <div className="relative w-full max-w-7xl h-screen max-h-[75em] mx-auto" aria-hidden />
+  )
+});
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import socials from '@/data/socials.json';
@@ -23,7 +25,6 @@ import InitialLoader from '@/layout/loader';
 import useDeviceSize from '@/hooks/useDeviceSize';
 import MobileMenu from '@/layout/mobile-menu';
 import { FooterTrack } from '@/layout/mobile-footer';
-import { AnimatePresence } from 'motion/react';
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 export default function Home() {
@@ -33,7 +34,7 @@ export default function Home() {
   const [isPageVisible, setIsPageVisible] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
   const { isMobile } = useDeviceSize();
-  const [allowMotion, setAllowMotion] = useState(true); 
+  const [allowMotion, setAllowMotion] = useState(true);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -104,7 +105,7 @@ export default function Home() {
       {isMobile ? <MobileMenu /> : <Navbar />}
 
       <HeroText isVisible={isPageVisible} />
-''
+
       <Info />
 
       <MiniGame onGameComplete={setIsGameComplete} />

@@ -2,23 +2,18 @@
  * Video optimization utilities for better performance and user experience
  */
 
-export interface VideoOptimizationConfig {
-  enableAdaptiveLoading: boolean;
-  enableMobileOptimization: boolean;
-  enableConnectionDetection: boolean;
-  enableReducedMotion: boolean;
-  maxFileSize: number; // in bytes
-  supportedFormats: string[];
+
+
+export interface NetworkConnection {
+  effectiveType?: string;
+  downlink?: number;
+  addEventListener?: (event: string, listener: () => void) => void;
+  removeEventListener?: (event: string, listener: () => void) => void;
 }
 
-export const defaultVideoConfig: VideoOptimizationConfig = {
-  enableAdaptiveLoading: true,
-  enableMobileOptimization: true,
-  enableConnectionDetection: true,
-  enableReducedMotion: true,
-  maxFileSize: 5 * 1024 * 1024, // 5MB
-  supportedFormats: ['mp4', 'webm', 'ogg']
-};
+export interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkConnection;
+}
 
 /**
  * Check if the user's connection is slow
@@ -28,10 +23,10 @@ export function isSlowConnection(): boolean {
     return false;
   }
 
-  const connection = (navigator as any).connection;
-  const slowConnections = ['slow-2g', '2g'];
+  const connection = (navigator as NavigatorWithConnection).connection;
+  const slowConnections: string[] = ['slow-2g', '2g'];
   
-  return slowConnections.includes(connection.effectiveType);
+  return connection?.effectiveType ? slowConnections.includes(connection.effectiveType) : false;
 }
 
 /**
@@ -120,8 +115,8 @@ export function estimateLoadTime(fileSizeBytes: number): number {
     return 3000; // Default 3 seconds
   }
 
-  const connection = (navigator as any).connection;
-  const downlink = connection.downlink || 1; // Mbps
+  const connection = (navigator as NavigatorWithConnection).connection;
+  const downlink = connection?.downlink ?? 1; // Mbps
   
   // Convert file size to bits and calculate time
   const fileSizeBits = fileSizeBytes * 8;

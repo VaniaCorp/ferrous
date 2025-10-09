@@ -15,8 +15,7 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
   const [hasError, setHasError] = useState(false);
   
   const { 
-    shouldSkipVideo, 
-    isMobile, 
+    shouldSkipVideo,
     getVideoSource, 
     getVideoAttributes, 
     timeoutMs 
@@ -54,8 +53,8 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
         }
         if (pageRef && pageRef.current) {
           // Optionally focus the main page for accessibility
-          if (typeof (pageRef.current as any).focus === "function") {
-            (pageRef.current as any).focus();
+          if (typeof (pageRef.current).focus === "function") {
+            (pageRef.current).focus();
           }
         }
         onComplete();
