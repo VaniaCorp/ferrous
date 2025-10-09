@@ -134,7 +134,7 @@ export default function WaitlistDisplay() {
         <form
           action={formAction}
           onSubmit={() => setSubmitted(true)}
-          className={`absolute bottom-12 left-[50%] translate-x-[-50%] w-full max-w-sm lg:max-w-xl p-2 bg-white rounded-2xl flex items-center gap-2 overflow-hidden ${isMobile ? "bottom-4" : "bottom-12"}`}
+          className={`absolute bottom-12 left-[50%] translate-x-[-50%] w-full max-w-xs md:max-w-sm lg:max-w-xl p-1 md:p-2 bg-white rounded-xl md:rounded-2xl focus-within:outline-none focus-within:ring-1 focus-within:ring-orange-500 flex items-center gap-2 overflow-hidden ${isMobile ? "bottom-4" : "bottom-12"}`}
         >
           <input
             type="email"
@@ -142,13 +142,13 @@ export default function WaitlistDisplay() {
             id="waitlist-email"
             required
             placeholder="Enter your email"
-            className="absolute top-0 left-0 w-full h-full p-2 md:p-4 text-base text-black rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 no-smooth-scroll"
+            className="absolute top-0 left-0 w-full h-full p-2 md:p-4 text-base text-black rounded-xl md:rounded-2xl no-smooth-scroll"
             aria-label="Email address for waitlist"
           />
           <button
             type="submit"
             disabled={false}
-            className="relative z-10 bg-black rounded-lg flex items-center justify-center ml-auto w-12 h-12 transition-all duration-200 hover:scale-105 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="relative z-10 bg-black rounded-lg flex items-center justify-center ml-auto md:w-12 md:h-12 w-10 h-10 transition-all duration-200 hover:scale-105 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
             aria-label="Submit email to join waitlist"
           >
             <Icon icon="codex:check" width={24} height={24} color="white" />

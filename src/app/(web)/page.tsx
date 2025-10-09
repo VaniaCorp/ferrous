@@ -6,9 +6,11 @@ import blackWorldAnimation from "@/lottie/black-world-lottie.json";
 import colouredWorldAnimation from "@/lottie/coloured-world-lottie.json";
 import HeroText from '@/ui/web/hero-text';
 import Info from '@/ui/web/info';
-const MiniGame = dynamic(() => import('@/ui/web/mini-game'), { ssr: false, loading: () => (
-  <div className="relative w-full max-w-7xl h-screen max-h-[75em] mx-auto" aria-hidden />
-) });
+const MiniGame = dynamic(() => import('@/ui/web/mini-game'), {
+  ssr: false, loading: () => (
+    <div className="relative w-full max-w-7xl h-screen max-h-[75em] mx-auto" aria-hidden />
+  )
+});
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import socials from '@/data/socials.json';
@@ -32,7 +34,7 @@ export default function Home() {
   const [isPageVisible, setIsPageVisible] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
   const { isMobile } = useDeviceSize();
-  const [allowMotion, setAllowMotion] = useState(true); 
+  const [allowMotion, setAllowMotion] = useState(true);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -98,7 +100,7 @@ export default function Home() {
   return (
     <div
       ref={pageRef}
-      className="relative w-full h-full"
+      className="relative w-full h-full max-md:overflow-x-hidden"
     >
       {isMobile ? <MobileMenu /> : <Navbar />}
 
@@ -143,7 +145,6 @@ export default function Home() {
         ))}
       </nav>
 
-
       {isMobile ? (
         !isGameComplete && (
           <Image
@@ -154,7 +155,7 @@ export default function Home() {
             priority
             fetchPriority="high"
             // sizes="100vw"
-            className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-40`}
+            className={`fixed bottom-0 left-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-40`}
           />
         )
       ) : (
@@ -184,7 +185,7 @@ export default function Home() {
             priority
             fetchPriority="high"
             // sizes="100vw"
-            className={`fixed bottom-0 left-0 inset-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-50`}
+            className={`fixed bottom-0 left-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-50`}
           />
         )
       ) : (
@@ -205,7 +206,7 @@ export default function Home() {
           loop
           width={0}
           height={0}
-          className='fixed w-[60em] h-[60em] lg:w-max lg:h-max top-[50%] translate-y-[-50%] left-[-20%] xl:right-[-70%] inset-0 -z-10 pointer-events-none'
+          className='fixed w-[60em] h-[60em] max-md:hidden lg:w-max lg:h-max top-[50%] translate-y-[-50%] left-[-20%] xl:right-[-70%] inset-0 -z-10 pointer-events-none'
         />
       )}
     </div>

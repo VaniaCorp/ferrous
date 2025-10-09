@@ -83,7 +83,7 @@ export function FooterTrack() {
   if (!isVisible) return null;
 
   return (
-    <div className="glass !border-none fixed bottom-2  left-1/2 -translate-x-1/2 w-full max-w-md h-max backdrop-blur-lg rounded-3xl px-2 py-5 flex items-center justify-between transition-all duration-500 z-50">
+    <div className="glass !border-none fixed bottom-0 left-1/2 -translate-x-1/2 w-full xs:max-w-xs sm:max-w-sm h-max backdrop-blur-lg rounded-3xl px-2 py-5 flex items-center justify-between transition-all duration-500 z-50">
       <Link 
         href="#waitlist"
         onClick={handleWaitlistClick}

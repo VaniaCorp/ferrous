@@ -86,7 +86,7 @@ export default function Partner() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="w-full"
+            className="w-full max-md:max-w-sm"
           >
             <FormDisplay 
               onSubmit={handleFormSubmit}
