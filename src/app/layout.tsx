@@ -24,7 +24,6 @@ const dmMono = DM_Mono({
 export const metadata: Metadata = {
   title: "Ferrous",
   description: "Ferrous bridges blocked economies to the global money pool turning local currency into smart investments using AI and DeFi",
-  viewport: "width=device-width, initial-scale=1.0",
 };
 
 export default function RootLayout({

@@ -2,8 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import glowAnimation from "@/lottie/glow.json";
-import blackWorldAnimation from "@/lottie/black-world-lottie.json";
-import colouredWorldAnimation from "@/lottie/coloured-world-lottie.json";
+import WorldBackground from '@/components/world-background';
 import HeroText from '@/ui/web/hero-text';
 import Info from '@/ui/web/info';
 const MiniGame = dynamic(() => import('@/ui/web/mini-game'), {
@@ -19,7 +18,6 @@ const WaitlistDisplay = dynamic(() => import('@/ui/web/wailtist'), { ssr: false,
 const Features = dynamic(() => import('@/ui/web/features'), { ssr: false, loading: () => <section className="w-full min-h-[48rem]" aria-hidden /> });
 const About = dynamic(() => import('@/ui/web/about'), { ssr: false, loading: () => <section className="w-full min-h-[56rem]" aria-hidden /> });
 const Details = dynamic(() => import('@/ui/web/details'), { ssr: false, loading: () => <section className="w-full min-h-[40rem]" aria-hidden /> });
-import Image from 'next/image';
 const Partner = dynamic(() => import('@/ui/web/partner'), { ssr: false, loading: () => <section className="w-full min-h-[36rem]" aria-hidden /> });
 import InitialLoader from '@/layout/loader';
 import useDeviceSize from '@/hooks/useDeviceSize';
@@ -145,60 +143,17 @@ export default function Home() {
         ))}
       </nav>
 
-      {isMobile ? (
-        !isGameComplete && (
-          <Image
-            src="/images/mobile-black-world.gif"
-            alt='Black World'
-            width={0}
-            height={0}
-            priority
-            fetchPriority="high"
-            // sizes="100vw"
-            className={`fixed bottom-0 left-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-40`}
-          />
-        )
-      ) : (
-        allowMotion && !isGameComplete && (
-          <Lottie
-            animationData={blackWorldAnimation}
-            alt="Rotating gray earth"
-            width={0}
-            height={0}
-            className={`w-full lg:h-full object-fill fixed top-[0%] lg:top-56 -left-[0%] inset-0 -z-10 transition-opacity ease-in-out duration-300`}
-          />
-        )
-      )}
+      <WorldBackground 
+        isMobile={isMobile}
+        isGameComplete={isGameComplete}
+        allowMotion={allowMotion}
+      />
 
       <WaitlistDisplay />
 
       {isMobile ? <FooterTrack /> : null}
 
 
-      {isMobile ? (
-        isGameComplete && (
-          <Image
-            src="/images/mobile-color-world.gif"
-            alt='Colour World'
-            width={0}
-            height={0}
-            priority
-            fetchPriority="high"
-            // sizes="100vw"
-            className={`fixed bottom-0 left-0 w-full h-full object-cover -z-10 transition-all ease-in-out duration-300 opacity-50`}
-          />
-        )
-      ) : (
-        allowMotion && isGameComplete && (
-          <Lottie
-            animationData={colouredWorldAnimation}
-            alt="Rotating colour earth"
-            width={0}
-            height={0}
-            className={`w-full h-full object-cover fixed top-[74%] lg:top-[20%] -left-[0%] inset-0 -z-10 transition-all ease-in-out duration-300`}
-          />
-        )
-      )}
 
       {allowMotion && (
         <Lottie
