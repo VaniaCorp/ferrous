@@ -89,11 +89,11 @@ export default function InitialLoader({ onComplete, pageRef }: InitialLoaderProp
       aria-label="Loading"
     >
       {/* Loading indicator */}
-      {!isVideoLoaded && !hasError && (
+      {/* {!isVideoLoaded && !hasError && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin" />
         </div>
-      )}
+      )} */}
       
       {/* Error fallback */}
       {hasError && (
