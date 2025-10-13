@@ -14,6 +14,13 @@ export default function LenisProvider({ children }: Readonly<{ children: ReactNo
     // Only create Lenis instance on the client side
     if (typeof window === "undefined") return;
 
+    // Respect reduced motion: disable Lenis entirely
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      setLenis(null);
+      return;
+    }
+
     const lenisInstance = new Lenis();
     setLenis(lenisInstance);
     
@@ -28,14 +35,25 @@ export default function LenisProvider({ children }: Readonly<{ children: ReactNo
     });
 
     // Drive Lenis with native rAF to reduce coupling
+    let running = true;
     const loop = (time: number) => {
+      if (!running) return;
       lenisInstance.raf(time);
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
 
+    // Pause rAF when page is hidden to save CPU/battery
+    const handleVisibility = () => {
+      const hidden = document.hidden;
+      running = !hidden;
+      if (running) requestAnimationFrame(loop);
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
     return () => {
       lenisInstance.destroy();
+      document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, []);
 

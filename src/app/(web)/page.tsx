@@ -102,7 +102,7 @@ export default function Home() {
     >
       {isMobile ? <MobileMenu /> : <Navbar />}
 
-      <HeroText isVisible={isPageVisible} />
+      <HeroText />
 
       <Info />
 
