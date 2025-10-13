@@ -25,7 +25,7 @@ const WorldBackground: React.FC<WorldBackgroundProps> = ({
   useEffect(() => {
     if (currentState !== isGameComplete) {
       setIsVisible(false);
-      
+
       const fadeOutTimer = setTimeout(() => {
         setCurrentState(isGameComplete);
         setIsVisible(true);
@@ -39,7 +39,7 @@ const WorldBackground: React.FC<WorldBackgroundProps> = ({
   const imageSrc = currentState ? "/videos/earth-color-mobile.gif" : "/videos/earth-black-mobile.gif";
   const altText = currentState ? 'Colour World' : 'Black World';
   const lottieAltText = currentState ? "Rotating colour earth" : "Rotating gray earth";
-  const opacityClass = currentState ? 'opacity-50' : 'opacity-40';
+  const opacityClass = currentState ? 'opacity-50' : 'opacity-60';
 
   if (isMobile) {
     return (
@@ -50,9 +50,8 @@ const WorldBackground: React.FC<WorldBackgroundProps> = ({
         height={0}
         priority
         fetchPriority="high"
-        className={`fixed bottom-0 left-0 w-full h-full object-cover -z-10 transition-opacity ease-in-out duration-600 ${
-          isVisible ? opacityClass : 'opacity-0'
-        }`}
+        className={`fixed bottom-0 left-0 w-full h-full object-cover -z-10 transition-opacity ease-in-out duration-600 ${isVisible ? opacityClass : 'opacity-0'
+          }`}
       />
     );
   }
@@ -67,9 +66,8 @@ const WorldBackground: React.FC<WorldBackgroundProps> = ({
       alt={lottieAltText}
       width={0}
       height={0}
-      className={`w-full lg:h-full object-fill fixed top-[0%] lg:top-56 -left-[0%] inset-0 -z-10 transition-opacity ease-in-out duration-600 ${
-        isVisible ? 'opacity-100' : 'opacity-0'
-      }`}
+      className={`w-full lg:h-full object-fill fixed top-[0%] lg:top-56 -left-[0%] inset-0 -z-10 transition-opacity ease-in-out duration-600 ${isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
     />
   );
 };

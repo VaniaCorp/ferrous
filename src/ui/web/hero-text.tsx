@@ -3,7 +3,7 @@ import useDeviceSize from "@/hooks/useDeviceSize";
 import { useEffect, useState } from "react";
 
 interface HeroTextProps {
-  isVisible: boolean;
+  isVisible?: boolean;
 }
 
 export default function HeroText({ isVisible }: HeroTextProps) {

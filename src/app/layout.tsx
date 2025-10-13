@@ -35,7 +35,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="preload" href="/fonts/Maesiez.otf" as="font" type="font/otf" crossOrigin="anonymous" />
-        <link rel="preload" href="/videos/intro-vid.mp4" as="video" type="video/mp4" />
+        {/* <link rel="preload" href="/videos/intro-vid.mp4" as="video" type="video/mp4" /> */}
       </head>
       <LenisProvider>
         <body
