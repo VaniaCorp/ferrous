@@ -269,7 +269,7 @@ export default function AnimatedCard({
       {!isExpanded ? (
         <motion.div
           key="card-collapsed"
-          className={`relative flex flex-wrap glass rounded-[49px] md:rounded-xl backdrop-blur-lg lg:backdrop-blur-none shadow-lg text-white transition-all duration-300 cursor-pointer overflow-hidden
+          className={`relative flex flex-wrap glass rounded-[49px] md:rounded-xl backdrop-blur-lg shadow-lg text-white transition-all duration-300 cursor-pointer overflow-hidden
             ${isMobile ? "w-[20em] basis-[20em] min-h-[480px]" : isTablet ? "w-[22em] basis-[22em] min-h-[600px]" : "w-[370px] min-h-[600px]"}
             `}
           onClick={onToggle}
@@ -282,7 +282,7 @@ export default function AnimatedCard({
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           layout
         >
-          <motion.div className="absolute top-0 left-0 w-full h-full bg-olive-transparent md:bg-olive-transparent px-8 py-12 flex items-center justify-center">
+          <motion.div className="absolute top-0 left-0 w-full h-full bg-olive-transparent px-8 py-12 flex items-center justify-center">
             <motion.div
               layout
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
