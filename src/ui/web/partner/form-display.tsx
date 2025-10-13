@@ -65,7 +65,7 @@ export default function FormDisplay({
           <>
             {/* FAQ Section */}
             <motion.aside
-              className="relative glass w-full max-w-xl h-[30em] rounded-2xl overflow-hidden"
+              className="relative glass backdrop-blur-lg w-full max-w-xl h-[30em] rounded-2xl overflow-hidden"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, scale: 0.9 }}
@@ -98,7 +98,7 @@ export default function FormDisplay({
 
             {/* Form Section */}
             <motion.section
-              className="relative glass w-full max-w-lg h-[40em] rounded-2xl overflow-hidden"
+              className="relative glass backdrop-blur-lg w-full max-w-lg h-[40em] rounded-2xl overflow-hidden"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9 }}

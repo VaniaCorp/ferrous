@@ -38,7 +38,7 @@ export default function ExpandableCard({
     <motion.div
       layout
       transition={{ layout: { duration: 0.4, type: "spring" } }}
-      className={`relative glass rounded-xl p-6 text-left shadow-lg text-white/90 flex flex-col gap-4 cursor-pointer 
+      className={`relative glass backdrop-blur-lg rounded-xl p-6 text-left shadow-lg text-white/90 flex flex-col gap-4 cursor-pointer 
         ${className}
         ${isMobile ? "w-[20em]" : expanded ? "w-[32em]" : "w-[24em]"}
       `}
@@ -57,7 +57,7 @@ export default function ExpandableCard({
       aria-expanded={expanded}
       onClick={handleToggle}
     >
-      <div className="absolute top-0 left-0 w-full h-full bg-[#71460040] inset-0 pointer-events-none"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-olive-transparent/50 inset-0 pointer-events-none"></div>
       <button
         className="w-full text-left focus:outline-none"
         onClick={handleToggle}

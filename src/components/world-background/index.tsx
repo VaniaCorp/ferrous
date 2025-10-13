@@ -36,7 +36,7 @@ const WorldBackground: React.FC<WorldBackgroundProps> = ({
   }, [isGameComplete, currentState]);
 
   const animationData = currentState ? colouredWorldAnimation : blackWorldAnimation;
-  const imageSrc = currentState ? "/images/mobile-color-world.gif" : "/images/mobile-black-world.gif";
+  const imageSrc = currentState ? "/videos/earth-color-mobile.gif" : "/videos/earth-black-mobile.gif";
   const altText = currentState ? 'Colour World' : 'Black World';
   const lottieAltText = currentState ? "Rotating colour earth" : "Rotating gray earth";
   const opacityClass = currentState ? 'opacity-50' : 'opacity-40';

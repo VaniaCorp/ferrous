@@ -199,7 +199,7 @@ export default function MiniGame({ onGameComplete }: MiniGameProps) {
               </span>
               {/* Animated underline */}
               <div
-                className={`absolute bottom-0 -left-2 h-2 bg-white transition-all duration-500 ease-out ${revealedTitleParts.includes(frag.id) ? 'w-full' : 'w-0'
+                className={`absolute bottom-0 -left-2 h-0.5 md:h-2 bg-white transition-all duration-500 ease-out ${revealedTitleParts.includes(frag.id) ? 'w-full' : 'w-0'
                   }`}
                 style={{
                   transform: revealedTitleParts.includes(frag.id) ? 'scaleX(1)' : 'scaleX(0)',
